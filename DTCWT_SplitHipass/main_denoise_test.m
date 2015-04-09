@@ -15,7 +15,7 @@
 clear;
 
 
-imgName    = 'pics/Lena512.png';
+imgName    = 'pics/Barbara512.png';
 s = double(imread(imgName));
 
 
@@ -28,10 +28,23 @@ len = length(sigmaN);
 
 load noise512.mat
 
-[FS_filter2d, filter2d] = DualTreeFilter2d_SplitHipass;
+% [FS_filter2d, filter2d] = DualTreeFilter2d_SplitHipass;
+[FS_filter2d, filter2d] = DualTreeFilter2d;
 
 
 PSNR = zeros(1, len);
+
+
+% tt = [10.4, 6.0, 17.4, 38.5];
+tt = 6.0 * ones(1, 4);
+
+% tt = [8.5, 5.0, 2.9, 6.0];
+% tt(1) = 6.8;
+% tt(2) = 4.3;
+% tt(3) = 9.5;
+% tt(4) = 17.5;
+dlen = 11;
+PSNRresult = zeros(1, dlen);
 
 for i = 1:len
     
@@ -42,15 +55,21 @@ for i = 1:len
     %n = sigma*randn(size(s));
     x = s + n;
     
+    %     for j=1:dlen
     % Run local adaptive image denoising algorithm using dual-tree DWT.
-    y = denoise_DualTree2d(x,5, sigma, FS_filter2d, filter2d);
+    y = denoise_DualTree2d(x, 5, sigma, FS_filter2d, filter2d, tt);
     
     % Calculate the error
     err = s - y;
     
     % Calculate the PSNR value
-    PSNR(i) = 20*log10(255/std(err(:)))
+    PSNR(i) = 20*log10(255/std(err(:)));
+    g = sprintf('%g   ', PSNR);
+    fprintf('PSNR =\n %s\n', g);
     
+    %         PSNRresult(j) = 20*log10(255/std(err(:)))
+    %         tt(4) = tt(4) + 0.2;
+    %     end
 end
 
 

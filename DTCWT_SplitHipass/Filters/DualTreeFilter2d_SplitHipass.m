@@ -11,7 +11,7 @@ filter1d{2} = Tree2Filter1d;
 % Split Hipass
 u1.start_pt = -2;
 u1.filter = [-0.5, 0, 0.5];
-u2.start_pt = -4;   % -4
+u2.start_pt = -2;   % -4
 u2.filter = [-0.5, 0, -0.5];
 
 % u1coeff = [-0.13596253880164942012651595042663e0,...
@@ -31,7 +31,7 @@ u2.filter = [-0.5, 0, -0.5];
 %     0.40106697972984013787343526166126e0];
 % u1.filter = u1coeff(end:-1:1);
 % u1.start_pt = -4;
-% u2.filter = u2coeff(end:-1:1);
+% u2.filter = u2coeff;
 % u2.start_pt = -4;
 
 

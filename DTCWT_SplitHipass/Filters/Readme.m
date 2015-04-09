@@ -133,7 +133,7 @@ FilterBanks{1}{1}   % 2D filter bank (1 lowpass + 3 highpass), use tree 1 filter
 %
 
 [FS_FilterBanks, FilterBanks] = DualTreeFilter2d_SplitHipass
-
+FilterBanks{1}{1}
 
 
 

@@ -1,4 +1,4 @@
-function y = denoise_DualTree2d(x,J, sigmaN, FS_filter2d, filter2d)
+function y = denoise_DualTree2d(x,J, sigmaN, FS_filter2d, filter2d, tt)
 % Local Adaptive Image Denoising Algorithm
 % Usage :
 %        y = denoising_dtdwt(x)
@@ -25,7 +25,7 @@ x = symext(x,buffer_size);
 
 
 load nor_dualtree_noise    % run ComputeNorm_noise to generate this mat file.
-
+% load nor_selesnick
 
 % Forward dual-tree DWT
 % Either FSfarras or AntonB function can be used to compute the stage 1 filters  
@@ -46,6 +46,9 @@ Nsig = sigmaN;
 num_hipass = length(W{1}{1}{1});
 
 for scale = 1:J-1
+    if (scale==(J-1))
+        scale;
+    end
     for dir = 1:2
         for dir1 = 1:num_hipass
             
@@ -69,13 +72,15 @@ for scale = 1:J-1
             Ssig = sqrt(max(Wsig-Nsig.^2,eps));
             
             % Threshold value estimation
-            T = sqrt(6)*Nsig^2./Ssig;
+            ttt = tt(scale);
+            T = sqrt(ttt)*Nsig^2./Ssig;
             
             % Bivariate Shrinkage
             Y_coef = Y_coef_real+I*Y_coef_imag;
             Y_parent = Y_parent_real + I*Y_parent_imag;
             
-            
+%             hist(Y_coef_real);
+%             hist(Y_coef_imag);
             
             Y_coef = bishrink(Y_coef,Y_parent,T);
             W{scale}{1}{dir}{dir1} = real(Y_coef);

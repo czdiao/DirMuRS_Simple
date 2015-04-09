@@ -65,8 +65,8 @@ clear; clc;
 
 x = rand(1024, 1024);
 
-[FS_filter2d, filter2d] = DualTreeFilter2d_SplitHipass;
-% [FS_filter2d, filter2d] = DualTreeFilter2d;
+% [FS_filter2d, filter2d] = DualTreeFilter2d_SplitHipass;
+[FS_filter2d, filter2d] = DualTreeFilter2d;
 
 w = DualTree2d(x, 5, FS_filter2d, filter2d);
 y = iDualTree2d(w,5, FS_filter2d, filter2d);
@@ -101,9 +101,18 @@ err = max(max(abs(x-y)))
 
 
 
-
-
-
+% load('nor_dualtree_noise.mat')
+% 
+% for i=1:5
+%     for tree1=1:1
+%         for tree2=1:1
+%             fprintf('level=%d, t1=%d, t2=%d:\n', i, tree1, tree2);
+%             n = cell2mat(nor{i}{tree1}{tree2})
+%        end
+%     end
+% end
+% 
+% 
 
 
 

@@ -1,6 +1,6 @@
 
 L=5;
-N = 1024; 
+N = 2048; 
 sigmaN = 20;
 n = sigmaN*randn(N, N);
 sigmainit = std(n(:))
@@ -17,7 +17,6 @@ for scale = 1:L
 	for dir = 1:2
 		for dir1 = 1:num_hipass
     		nor{scale}{part}{dir}{dir1} = std(W{scale}{part}{dir}{dir1}(:))/sigmainit;
-		%sqrt(sum(sum(y.^2)))
 		end
 	end
     end
