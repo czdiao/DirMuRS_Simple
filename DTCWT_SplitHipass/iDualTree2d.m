@@ -1,8 +1,6 @@
-function [ y ] = iDualTree2d( w, J, FS_filter2d, filter2d )
+function [ y ] = iDualTree2d( w, J, FS_filter2d, filter2d)
 %IDUALTREE2D Summary of this function goes here
 %   Detailed explanation goes here
-
-%[FS_filter2d, filter2d] = DualTreeFilter2d;
 
 num_hipass = length(filter2d{1}{1})-1;  % the first one is lowpass
 
@@ -31,7 +29,7 @@ end
 y = y/4;
 
 
-
+y = y*2;    % Debug, to make the same normalization as Selesnick
 
 end
 

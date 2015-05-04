@@ -11,29 +11,21 @@ function y = denoise_DualTree2d(x,J, sigmaN, FS_filter2d, filter2d, tt)
 windowsize  = 7;
 windowfilt = ones(1,windowsize)/windowsize;
 
-% Number of Stages
-%J = 4;
+
 I=sqrt(-1);
 
 % symmetric extension
 L = length(x); % length of the original image.
-%N = L+2^J;     % length after extension.
-%x = symextend(x,2^(J-1));
 buffer_size = L/2;
-%x = symextend(x,buffer_size);
 x = symext(x,buffer_size);
 
 
-load nor_dualtree_noise    % run ComputeNorm_noise to generate this mat file.
-% load nor_selesnick
+% load nor_dualtree_noise    % run ComputeNorm_noise to generate this mat file.
+% load('nor_selesnick_origDT.mat');
+load('nor_selesnick_OrigHaar.mat');
+% load('nor_selesnick_Q1Haar.mat');
 
 % Forward dual-tree DWT
-% Either FSfarras or AntonB function can be used to compute the stage 1 filters  
-%[Faf, Fsf] = FSfarras;
-% [Faf, Fsf] = AntonB;
-% [af, sf] = dualfilt1;
-% W = cplxdual2D(x, J, Faf, af);
-% W = normcoef(W,J,nor);
 
 W = DualTree2d(x, J, FS_filter2d, filter2d);
 
@@ -41,14 +33,11 @@ W = normcoef(W,J,nor);
 
 
 % Noise variance estimation using robust median estimator..
-%tmp = W{1}{1}{1}{1};
 Nsig = sigmaN;
 num_hipass = length(W{1}{1}{1});
 
 for scale = 1:J-1
-    if (scale==(J-1))
-        scale;
-    end
+    tmpbreakpoint = scale;
     for dir = 1:2
         for dir1 = 1:num_hipass
             
@@ -67,20 +56,22 @@ for scale = 1:J-1
             Y_parent_imag   = expand(Y_parent_imag);
             
             
+            % Debug
+            
+            
             % Signal variance estimation
-            Wsig = conv2(windowfilt,windowfilt,(Y_coef_real).^2,'same');
+            Wsig = conv2(windowfilt,windowfilt,(Y_coef_imag).^2,'same');
             Ssig = sqrt(max(Wsig-Nsig.^2,eps));
             
             % Threshold value estimation
-            ttt = tt(scale);
-            T = sqrt(ttt)*Nsig^2./Ssig;
+%             ttt = tt(scale);
+            T = sqrt(tt)*Nsig^2./Ssig;
             
             % Bivariate Shrinkage
             Y_coef = Y_coef_real+I*Y_coef_imag;
             Y_parent = Y_parent_real + I*Y_parent_imag;
             
-%             hist(Y_coef_real);
-%             hist(Y_coef_imag);
+            y1 = abs(Y_coef);y2 = abs(Y_parent); r = y1./sqrt(y1.^2+y2.^2);
             
             Y_coef = bishrink(Y_coef,Y_parent,T);
             W{scale}{1}{dir}{dir1} = real(Y_coef);

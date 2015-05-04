@@ -1,4 +1,4 @@
-function [ w ] = DualTree2d( x, J, FS_filter2d, filter2d )
+function [ w ] = DualTree2d( x, J, FS_filter2d, filter2d)
 %DUALTREE2D Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -6,6 +6,7 @@ function [ w ] = DualTree2d( x, J, FS_filter2d, filter2d )
 
 w = cell(1, J+1);
 
+x = x/2;    % Debug, to make the same normalization as Selesnick
 
 num_hipass = length(filter2d{1}{1})-1;  % t
 

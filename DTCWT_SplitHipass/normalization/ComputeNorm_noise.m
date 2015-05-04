@@ -1,11 +1,13 @@
+%function nor = ComputeNorm_noise
 
 L=5;
-N = 2048; 
+N = 1024; 
 sigmaN = 20;
 n = sigmaN*randn(N, N);
-sigmainit = std(n(:))
+sigmainit = std(n(:));
 
 [FS_filter2d, filter2d] = DualTreeFilter2d_SplitHipass;
+% [FS_filter2d, filter2d] = DualTreeFilter2d;
 
 W = DualTree2d(n, L, FS_filter2d, filter2d);
 
@@ -23,3 +25,5 @@ for scale = 1:L
 end
 
 save nor_dualtree_noise nor
+
+% end

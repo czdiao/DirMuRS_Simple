@@ -5,12 +5,7 @@
 %        Raw Lena image
 % OUTPUT :
 %        PSNR value of the denoised image
-%
-% Load clean image
-%fid = fopen('Barbara512.png','r');
-%s  = fread(fid,[512 512],'unsigned char');
-%fclose(fid);
-%N = 512;
+
 
 clear;
 
@@ -20,65 +15,58 @@ s = double(imread(imgName));
 
 
 % Add noise 
-%SIGMANS = 5:5:100;%[5,10,15,20,25,30,50];  % Noise standard deviation
-% randn('seed',0);
+load noise512.mat
+
 sigmaN = [5, 10, 25, 40, 50, 80, 100];
 len = length(sigmaN);
 
 
-load noise512.mat
 
-% [FS_filter2d, filter2d] = DualTreeFilter2d_SplitHipass;
-[FS_filter2d, filter2d] = DualTreeFilter2d;
+[FS_filter2d, filter2d] = DualTreeFilter2d_SplitHipass;
+% [FS_filter2d, filter2d] = DualTreeFilter2d;
 
+
+% tt=2.0:0.2:10.0;
+% ttlen = length(tt);
+
+% sk = 1.6:0.1:2.2;
+% sklen = length(sk);
+
+% PSNR_matrix = zeros(sklen, ttlen, len);
 
 PSNR = zeros(1, len);
 
 
-% tt = [10.4, 6.0, 17.4, 38.5];
-tt = 6.0 * ones(1, 4);
+%     fprintf('tt = %g:\n', tt);
+    for i = 3:3
+        %             fprintf('i = %d\n', i);
+        sigma = sigmaN(i);
+        n = noise512{i};
+        
+        x = s + n;
+        
 
-% tt = [8.5, 5.0, 2.9, 6.0];
-% tt(1) = 6.8;
-% tt(2) = 4.3;
-% tt(3) = 9.5;
-% tt(4) = 17.5;
-dlen = 11;
-PSNRresult = zeros(1, dlen);
+        % Run local adaptive image denoising algorithm using dual-tree DWT.
+%         y = denoise_DualTree2d(x, 5, sigma, FS_filter2d, filter2d, 6);
 
-for i = 1:len
-    
-    sigma = sigmaN(i);
-    n = noise512{i};
-    
-    
-    %n = sigma*randn(size(s));
-    x = s + n;
-    
-    %     for j=1:dlen
-    % Run local adaptive image denoising algorithm using dual-tree DWT.
-    y = denoise_DualTree2d(x, 5, sigma, FS_filter2d, filter2d, tt);
-    
-    % Calculate the error
-    err = s - y;
-    
-    % Calculate the PSNR value
-    PSNR(i) = 20*log10(255/std(err(:)));
-    g = sprintf('%g   ', PSNR);
-    fprintf('PSNR =\n %s\n', g);
-    
-    %         PSNRresult(j) = 20*log10(255/std(err(:)))
-    %         tt(4) = tt(4) + 0.2;
-    %     end
-end
+        y = denoise_BLSGSM(x,5, sigma, FS_filter2d, filter2d);
+        
+        % Calculate the error
+        err = s - y;
+        
+        %             PSNR_matrix(isk, itt, i) = 20*log10(255/std(err(:)));
+        
+        % Calculate the PSNR value
+        PSNR(i) = 20*log10(255/std(err(:)));
+        fprintf('    %g', PSNR(i));
+    end
+    fprintf('\n');
+
+fprintf('\n\n');
 
 
 
-% ShowImage(s)
-% ShowImage(n)
-% ShowImage(x)
-% ShowImage(y)
-% ShowImage(err)
+
 
 
 
