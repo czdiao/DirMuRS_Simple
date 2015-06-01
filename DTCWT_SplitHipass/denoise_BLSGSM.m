@@ -16,8 +16,8 @@ params.block = [3,3];
 params.optim = 1;
 params.parent = 0;
 params.covariance = 1;
-% load Cw_exact;
-load Cw_MC;
+load Cw_DT_exact_3;
+% load Cw_MC_5;
 
 
 num_hipass = length(W{1}{1}{1});

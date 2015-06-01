@@ -36,6 +36,7 @@ W = normcoef(W,J,nor);
 Nsig = sigmaN;
 num_hipass = length(W{1}{1}{1});
 
+% for scale = J-1:-1:1
 for scale = 1:J-1
     tmpbreakpoint = scale;
     for dir = 1:2
@@ -60,7 +61,7 @@ for scale = 1:J-1
             
             
             % Signal variance estimation
-            Wsig = conv2(windowfilt,windowfilt,(Y_coef_imag).^2,'same');
+            Wsig = conv2(windowfilt,windowfilt,(Y_coef_real).^2,'same');
             Ssig = sqrt(max(Wsig-Nsig.^2,eps));
             
             % Threshold value estimation
@@ -71,7 +72,7 @@ for scale = 1:J-1
             Y_coef = Y_coef_real+I*Y_coef_imag;
             Y_parent = Y_parent_real + I*Y_parent_imag;
             
-            y1 = abs(Y_coef);y2 = abs(Y_parent); r = y1./sqrt(y1.^2+y2.^2);
+%             y1 = abs(Y_coef);y2 = abs(Y_parent); r = y1./sqrt(y1.^2+y2.^2);
             
             Y_coef = bishrink(Y_coef,Y_parent,T);
             W{scale}{1}{dir}{dir1} = real(Y_coef);

@@ -7,7 +7,7 @@ N = L/2^J;
 
 x = zeros(4*L,8*L);
 [FS_filter2d, filter2d] = DualTreeFilter2d_SplitHipass;
-w = DualTree2d(x, J, FS_filter2d, filter2d, 2);
+w = DualTree2d(x, J, FS_filter2d, filter2d);
 
 for d1 = 1:2
     for d2 = 1:2
@@ -20,21 +20,7 @@ for d1 = 1:2
 end
 
 %%
-% w{J}{1}{2}{2}(N/2,N/2+0*N) = 1;
-% w{J}{1}{1}{3}(N/2,N/2+1*N) = 1;
-% w{J}{1}{2}{1}(N/2,N/2+2*N) = 1;
-% w{J}{1}{1}{1}(N/2,N/2+3*N) = 1;
-% w{J}{1}{2}{3}(N/2,N/2+4*N) = 1;
-% w{J}{1}{1}{2}(N/2,N/2+5*N) = 1;
-% w{J}{2}{2}{2}(N/2+N,N/2+0*N) = 1;
-% w{J}{2}{1}{3}(N/2+N,N/2+1*N) = 1;
-% w{J}{2}{2}{1}(N/2+N,N/2+2*N) = 1;
-% w{J}{2}{1}{1}(N/2+N,N/2+3*N) = 1;
-% w{J}{2}{2}{3}(N/2+N,N/2+4*N) = 1;
-% w{J}{2}{1}{2}(N/2+N,N/2+5*N) = 1;
-
-%%
-y = iDualTree2d(w,J, FS_filter2d, filter2d, 2);
+y = iDualTree2d(w,J, FS_filter2d, filter2d);
 %y = [y; sqrt(y(1:L,:).^2+y(L+[1:L],:).^2)];
 
 ShowImage(y)

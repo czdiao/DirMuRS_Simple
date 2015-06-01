@@ -10,6 +10,7 @@ x = x/2;    % Debug, to make the same normalization as Selesnick
 
 num_hipass = length(filter2d{1}{1})-1;  % t
 
+
 for rowtree = 1:2
     for coltree = 1:2
         
@@ -18,6 +19,7 @@ for rowtree = 1:2
         for i = 1:num_hipass     % Hipass
             w{1}{rowtree}{coltree}{i} = analysis2d(x, FS_filter2d{rowtree}{coltree}(i+1));
         end
+        
         % Later Stages
         for j = 2:J
             for i = 1:num_hipass     % Hipass
@@ -29,6 +31,9 @@ for rowtree = 1:2
         
     end
 end
+
+num_hipass = length(w{1}{1}{1});
+
 
 
 for j = 1:J

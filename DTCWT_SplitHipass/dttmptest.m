@@ -20,14 +20,32 @@ x = rand(1024, 1024);
 [FS_filter2d, filter2d] = DualTreeFilter2d_SplitHipass;
 % % [FS_filter2d, filter2d] = DualTreeFilter2d;
 % 
-w = Framelet2d(x, 5, FS_filter2d{1}{2}, filter2d{2}{1});
-y = iFramelet2d(w, 5, FS_filter2d{1}{2}, filter2d{2}{1});
-% w = DualTree2d(x, 5, FS_filter2d, filter2d);
-% y = iDualTree2d(w,5, FS_filter2d, filter2d);
+% w = Framelet2d(x, 3, FS_filter2d{1}{2}, filter2d{2}{1});
+% y = iFramelet2d(w, 3, FS_filter2d{1}{2}, filter2d{2}{1});
+w = DualTree2d_SplitLow(x, 5, FS_filter2d, filter2d);
+y = iDualTree2d_SplitLow(w,5, FS_filter2d, filter2d);
+
+
+% u1.filter = [-0.5, 0.5];
+% u1.start_pt = -1;
+% u2.filter = [-0.5, -0.5];
+% u2.start_pt = -2;
+% 
+% for j =1:3
+%     tmp1 = SplitFilter2d(w{j}{1},u1, 1);
+%     tmp2 = SplitFilter2d(w{j}{1},u2, 1);
+%     w{j}{1} = tmp1;
+%     w{j} = InsertCell(w{j}, tmp2, 2);
+% end
+% for j = 1:3
+%     w{j}{1} = CombineFilter2d(w{j}{1}, u1, w{j}{2}, u2, 1);
+%     w{j} = DeleteCell(w{j}, 2);
+% end
+
+
+% y = iFramelet2d(w, 3, FS_filter2d{1}{2}, filter2d{2}{1});
+
 err = max(max(abs(x-y)))
-
-
-
 
 %%
 

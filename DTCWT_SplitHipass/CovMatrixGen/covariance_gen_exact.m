@@ -4,12 +4,12 @@ function [] = covariance_gen_exact()
 %%
 nLevel = 5;
 
-block = [3, 3];
+block = [5, 5];
 block_size = block(1)*block(2);
 
 
 
-[FS_filter2d, filter2d] = DualTreeFilter2d_SplitHipass;
+[FS_filter2d, filter2d] = DualTreeFilter2d;
 
 n = zeros(512,512);
 W = Framelet2d( n, nLevel, FS_filter2d{1}{1}, filter2d{1}{1});
@@ -18,13 +18,12 @@ W = Framelet2d( n, nLevel, FS_filter2d{1}{1}, filter2d{1}{1});
 
 nHipass = length(W{1});
 
-
 x11 = cell(1, block_size);
 x12 = x11; x21 = x11; x22 = x11;
 
 Cw = cell(1,nLevel);
 for j = 1:nLevel  %nLevel
-    j;
+    
     Cw{j} = cell(1,2);
     for d1 = 1:2     %2
         Cw{j}{d1} = cell(1,2);
@@ -35,18 +34,21 @@ for j = 1:nLevel  %nLevel
             end
         end
     end
+    i_center = floor(size(W{j}{1},1)/2)-1;
+    j_center = floor(size(W{j}{1},2)/2)-1;
     for k = 1:nHipass %nHipass
         for count = 1:block_size
             [i1, j1] = ij_index(count, block);
-            W{j}{k}(i1,j1) = 1/2;
+            
+            W{j}{k}(i1 + i_center, j1 + j_center) = 1/2;
             x11{count} = iFramelet2d(W,nLevel, FS_filter2d{1}{1}, filter2d{1}{1});
             x12{count} = iFramelet2d(W,nLevel, FS_filter2d{1}{2}, filter2d{1}{2});
             x21{count} = iFramelet2d(W,nLevel, FS_filter2d{2}{1}, filter2d{2}{1});
             x22{count} = iFramelet2d(W,nLevel, FS_filter2d{2}{2}, filter2d{2}{2});
             [x11{count}, x22{count}] = pm(x11{count}, x22{count});
-            [x12{count}, x21{count}] = pm(x12{count}, x22{count});
+            [x12{count}, x21{count}] = pm(x12{count}, x21{count});
 
-            W{j}{k}(i1,j1) = 0;
+            W{j}{k}(i1 + i_center,j1 + j_center) = 0;
         end
         
         for row_count = 1:block_size
@@ -67,18 +69,15 @@ for j = 1:nLevel  %nLevel
 
     end
 
+    fprintf('Finished Level %d\n', j);
 end
 
-save Cw_exact Cw
+save Cw_DT_exact_5 Cw
 
 end
 
 
-%%
-function [row, col] = ij_index(count, block)
-    row = ceil(count/block(2));
-    col = count - (row-1) * block(2);
-end
+
 
 
 

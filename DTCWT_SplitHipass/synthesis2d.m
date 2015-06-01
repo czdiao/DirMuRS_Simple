@@ -18,10 +18,14 @@ v = zeros(2*M,2*N);
 
 for i = 1:num_sig
     tmp = d2upsmpl(w{i},2,2,0,0);
-%     tmp = d2tconv(tmp, filter2d(i).row_filter, filter2d(i).row_start_pt,...
-%         filter2d(i).col_filter, filter2d(i).col_start_pt, 0);
+    
+    if (2*N<length(filter2d(i).row_filter))||(2*M<length(filter2d(i).col_filter))
+        disp('Error: signal is shorter than the filter in synthesis operation!\n');
+    end
+    %     tmp = d2tconv(tmp, filter2d(i).row_filter, filter2d(i).row_start_pt,...
+    %         filter2d(i).col_filter, filter2d(i).col_start_pt, 0);
     tmp = d2tconv_fir(tmp, filter2d(i).row_filter, filter2d(i).row_start_pt,...
-        filter2d(i).col_filter, filter2d(i).col_start_pt);    
+        filter2d(i).col_filter, filter2d(i).col_start_pt);
     v = v+tmp;
 end
 

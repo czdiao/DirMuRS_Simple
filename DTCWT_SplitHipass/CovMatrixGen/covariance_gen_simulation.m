@@ -12,11 +12,14 @@ block_size = block(1)*block(2);
 N = 1000; % Repeat times
 W = cell(1,N);
 
-[FS_filter2d, filter2d] = DualTreeFilter2d_SplitHipass;
+[FS_filter2d, filter2d] = DualTreeFilter2d;
 
 for i = 1:N
     n = sigma*randn([512,512]);
     W{i} = DualTree2d( n, nLevel, FS_filter2d, filter2d);
+    if mod(i,100)==0
+        fprintf('%d times\n', i);
+    end
 end
 
 %%
@@ -50,15 +53,12 @@ for j = 1:nLevel
     end
 end
 
-save Cw_MC Cw
+
+
+save Cw_DT_MC Cw
 
 end
 
-%%
-function [row, col] = ij_index(count, block)
-    row = ceil(count/block(2));
-    col = count - (row-1) * block(2);
-end
 
 
 

@@ -23,6 +23,11 @@ af_col = af.col_filter(end:-1:1);
 
 
 % analysis operation
+
+[M, N] = size(v);
+if (N<length(af_row))||(M<length(af_col))
+    disp('Error: signal is shorter than the filter in analysis operation!\n');
+end
 % w = d2tconv(v, af_row, row_start_pt, af_col, col_start_pt, 0);
 w = d2tconv_fir(v, af_row, row_start_pt, af_col, col_start_pt);
 w = d2dwnsmpl(w,2,2,0,0);
