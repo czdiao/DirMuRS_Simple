@@ -1,4 +1,5 @@
 function thr_coef = thr_bishrink(coef,sigma_n)
+% Bivariate Shrinkage for Framelet Coefficients
 
 %set the window size and the corresponding filter
 windowsize = 7;
@@ -22,9 +23,11 @@ for scale = 1:n_Lvl-1
             Wsig = conv2(windowfilt,windowfilt,(abs(Y_coef)).^2,'same');           
             Ssig = sqrt(max(Wsig - Nsig.^2, eps));
             %threshold value estimation
-            T = sqrt(3)*Nsig^2./Ssig;  
+            T = Nsig^2./Ssig;  
+
             % bivariate shrinkage
             Y_coef = bishrink(Y_coef, Y_parent, T);
+
             thr_coef{scale}{l} = Y_coef;
    end
 end

@@ -8,6 +8,7 @@ function [w1] = bishrink_d3(y1,y2,T)
 %      T  - threshold value
 % OUTPUT :
 %      w1 - the denoised coefficient
+% (Exactly the same as bishrink() function) 	Chenzhe
 
 R  = sqrt(abs(y1).^2 + abs(y2).^2);
 R = R - T;

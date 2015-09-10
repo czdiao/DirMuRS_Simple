@@ -1,0 +1,15 @@
+For Frequency Transforms:
+1. Add TPCTF code.
+
+2. Complete the time domain analysis and synthesis function optimization.
+
+3. Change Time domain Split code.
+
+4. Check and organize all old code. Change the name, remove _new
+
+5. Add Git repo
+
+
+
+
+Add More Documentation, Readme file

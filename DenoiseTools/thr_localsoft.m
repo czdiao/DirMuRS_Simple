@@ -14,14 +14,14 @@ n_Lvl      = length(coef)-1;
 Nsig       = sigma_n; % estimation sigma of noise
 
 thr_coef   = coef;
-for scale  = 1:n_Lvl
+for scale  = 1:n_Lvl-1
     L      = length(coef{scale});
     for l  = 1:L
         Y_coef = coef{scale}{l};
      
         switch lower(opt)
             case('local_soft')
-                windowsize = 13;
+                windowsize = 7;
                 windowfilt = ones(1,windowsize)/windowsize;
                 % signal variance estimation
                 Wsig = conv2(windowfilt,windowfilt,(abs(Y_coef)).^2,'same');

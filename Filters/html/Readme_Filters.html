@@ -1,0 +1,331 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Filters</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-06-24"><meta name="DC.source" content="Readme_Filters.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Filters</h1><!--introduction--><p><i><b>Author: Chenzhe Diao</b></i></p><p>Implementation of 1D and 2D separable filters. Haar, Daubechies8 and Dual Tree Filters. Some help functions for constructing filters.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Class of 1D/2D filters:   filter1d filter2d</a></li><li><a href="#2">Data Structure of 1D/2D filter banks</a></li><li><a href="#4">Implementation of 1D filter banks</a></li><li><a href="#5">Implementation of 2D filter banks</a></li></ul></div><h2>Class of 1D/2D filters:   filter1d filter2d<a name="1"></a></h2><div><ul><li><b>1D Filter class : <a href="matlab:edit('filter1d.m')">filter1d.m</a></b></li></ul></div><pre>     Properties:
+         filter  :   1d vector, filter array.
+         start_pt:   integer, starting point position of the filter.
+         label   :   char array. To label 'low', 'hi', etc. (Optional)</pre><pre>     Methods:
+         filter1d:   Constructor. Could be called as:
+                         1) f = filter1d(vec, pt, label)
+                         2) f = filter1d(vec, pt)
+                         3) f = filter1d
+         CQF     :   Generate highpass from lowpass by CQF pairs. $b_n=(-1)^(n+1)a_{1-n}$
+                         1) hi = CQF(low)
+                         2) hi = low.CQF
+                     where low and hi are both filter1d objects.
+         convfilter: Convolution of 2 1d filters.
+                         1) f = convfilter(u, v)
+                         2) f = u.convfilter(v)
+                     where u, v, f are all filter1d objects.</pre><div><ul><li><b>2D Filter class : <a href="matlab:edit('filter2d.m')">filter2d.m</a></b></li></ul></div><pre>     Properties:
+         row_filter  :   1d vector
+         col_filter  :   1d vector</pre><pre>         row_start_pt:   integer, starting point position of row filter.
+         col_start_pt:   integer, starting point position of col filter.</pre><pre>         row_label   :   char array. To label 'low', 'hi', etc. (Optional)
+         col_label   :   char array. To label 'low', 'hi', etc. (Optional)</pre><pre>     Methods:
+         filter2d:   Constructor. Could be called as:
+                         1) f = filte2d(f1d_row, f1d_col)
+                         2) f = filter2d
+                     where f1d_row and f1d_col are both filter1d objects, f is a filter2d object.</pre><h2>Data Structure of 1D/2D filter banks<a name="2"></a></h2><div><ul><li><b>1D Filter Bank: array of filter1d objects.</b></li><li><b>2D Filter Bank: array of filter2d objects.</b></li><li><b><a href="matlab:edit('FilterBankTensor.m')">FilterBankTensor.m</a>: Construct 2D Filter Bank by two 1D Filter Banks for each dimension.</b></li></ul></div><p><b><i>Notice that we always put lowpass filter at the first place in filter banks:</i></b> [lowpass, highpass1, highpass2, ...].</p><pre class="codeinput"><span class="comment">% Example of 1D filter bank</span>
+HaarFilterBank = Haar1d         <span class="comment">% Construct Haar Filter Bank</span>
+Lowpass = HaarFilterBank(1)     <span class="comment">% Lowpass filter</span>
+Highpass = HaarFilterBank(2)    <span class="comment">% Highpass filter</span>
+</pre><pre class="codeoutput">
+HaarFilterBank = 
+
+  1x2 filter1d array with properties:
+
+    filter
+    start_pt
+    label
+
+
+Lowpass = 
+
+  filter1d with properties:
+
+      filter: [0.5000 0.5000]
+    start_pt: 0
+       label: 'low'
+
+
+Highpass = 
+
+  filter1d with properties:
+
+      filter: [-0.5000 0.5000]
+    start_pt: 0
+       label: 'high'
+
+</pre><pre class="codeinput"><span class="comment">% Example of 2D filter bank</span>
+Haar2d = FilterBankTensor(HaarFilterBank, HaarFilterBank)   <span class="comment">% Construct 2D Haar Filter Bank</span>
+LL = Haar2d(1)
+LH = Haar2d(2)
+HL = Haar2d(3)
+HH = Haar2d(4)
+</pre><pre class="codeoutput">
+Haar2d = 
+
+  1x4 filter2d array with properties:
+
+    row_filter
+    col_filter
+    row_start_pt
+    col_start_pt
+    row_label
+    col_label
+
+
+LL = 
+
+  filter2d with properties:
+
+      row_filter: [0.5000 0.5000]
+      col_filter: [0.5000 0.5000]
+    row_start_pt: 0
+    col_start_pt: 0
+       row_label: 'low'
+       col_label: 'low'
+
+
+LH = 
+
+  filter2d with properties:
+
+      row_filter: [0.5000 0.5000]
+      col_filter: [-0.5000 0.5000]
+    row_start_pt: 0
+    col_start_pt: 0
+       row_label: 'low'
+       col_label: 'high'
+
+
+HL = 
+
+  filter2d with properties:
+
+      row_filter: [-0.5000 0.5000]
+      col_filter: [0.5000 0.5000]
+    row_start_pt: 0
+    col_start_pt: 0
+       row_label: 'high'
+       col_label: 'low'
+
+
+HH = 
+
+  filter2d with properties:
+
+      row_filter: [-0.5000 0.5000]
+      col_filter: [-0.5000 0.5000]
+    row_start_pt: 0
+    col_start_pt: 0
+       row_label: 'high'
+       col_label: 'high'
+
+</pre><h2>Implementation of 1D filter banks<a name="4"></a></h2><div><ul><li><a href="matlab:edit('Haar1d.m')">Haar1d.m</a></li><li><a href="matlab:edit('Daubechies8_1d.m')">Daubechies8_1d.m</a></li><li><a href="matlab:edit('FirstStageFilter1d.m')">FirstStageFilter1d.m</a></li><li><a href="matlab:edit('FirstStageFilterShift1d.m')">FirstStageFilterShift1d.m</a></li><li><a href="matlab:edit('Tree1Filter1d.m')">Tree1Filter1d.m</a></li><li><a href="matlab:edit('Tree2Filter1d.m')">Tree2Filter1d.m</a></li></ul></div><pre class="codeinput">HaarFB = Haar1d;                    <span class="comment">% Haar Filter Bank</span>
+D8FB = Daubechies8_1d;              <span class="comment">% Daubechies 8 Filer Bank</span>
+
+FSFB = FirstStageFilter1d;          <span class="comment">% Dual Tree Fist Stage Filter Bank a_0</span>
+FS2FB = FirstStageFilterShift1d;    <span class="comment">% Dual Tree First Stage Shift Filter Bank for Tree2</span>
+DT1FB = Tree1Filter1d;              <span class="comment">% Dual Tree Filter Bank for Tree 1</span>
+DT2FT = Tree2Filter1d;              <span class="comment">% Dual Tree Filter Bank for Tree 2</span>
+</pre><h2>Implementation of 2D filter banks<a name="5"></a></h2><div><ul><li><a href="matlab:edit('Daubechies8_2d.m')">Daubechies8_2d.m</a></li></ul></div><pre class="codeinput">D8FB_2d = Daubechies8_2d;           <span class="comment">% 2D Daubechies 8 Filter Bank</span>
+</pre><p><i><b>2D Dual Tree Filter Banks</b></i></p><div><ul><li><a href="matlab:edit('DualTreeFilter2d.m')">DualTreeFilter2d.m</a></li><li><a href="matlab:edit('DualTreeFilter2d_SplitHipass.m')">DualTreeFilter2d_SplitHipass.m</a></li></ul></div><pre class="codeinput"><span class="comment">% Output:</span>
+<span class="comment">%   First Stage Filter Banks:   FS_FB{row_tree}{col_tree}{band}</span>
+<span class="comment">%   Later Stage Filter Banks:   FB{row_tree}{col_tree}{band}</span>
+<span class="comment">%   row_tree, col_tree = 1, 2</span>
+[FS_FB, FB] = DualTreeFilter2d;             <span class="comment">% band = 1 : 3</span>
+[FS_FB, FB] = DualTreeFilter2d_SplitHipass  <span class="comment">% band = 1 : 8</span>
+</pre><pre class="codeoutput">
+FS_FB = 
+
+    {1x2 cell}    {1x2 cell}
+
+
+FB = 
+
+    {1x2 cell}    {1x2 cell}
+
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Filters
+% _*Author: Chenzhe Diao*_
+% 
+% Implementation of 1D and 2D separable filters.
+% Haar, Daubechies8 and Dual Tree Filters. Some help functions for
+% constructing filters.
+%
+
+
+%% Class of 1D/2D filters:   filter1d filter2d
+% 
+% * *1D Filter class : <matlab:edit('filter1d.m') filter1d.m>* 
+%
+%       Properties:
+%           filter  :   1d vector, filter array.
+%           start_pt:   integer, starting point position of the filter.
+%           label   :   char array. To label 'low', 'hi', etc. (Optional)
+%
+%       Methods:
+%           filter1d:   Constructor. Could be called as:
+%                           1) f = filter1d(vec, pt, label)
+%                           2) f = filter1d(vec, pt)
+%                           3) f = filter1d
+%           CQF     :   Generate highpass from lowpass by CQF pairs. $b_n=(-1)^(n+1)a_{1-n}$
+%                           1) hi = CQF(low)
+%                           2) hi = low.CQF
+%                       where low and hi are both filter1d objects.
+%           convfilter: Convolution of 2 1d filters.
+%                           1) f = convfilter(u, v)
+%                           2) f = u.convfilter(v)
+%                       where u, v, f are all filter1d objects.
+%
+% * *2D Filter class : <matlab:edit('filter2d.m') filter2d.m>* 
+%
+%       Properties:
+%           row_filter  :   1d vector
+%           col_filter  :   1d vector
+%
+%           row_start_pt:   integer, starting point position of row filter.
+%           col_start_pt:   integer, starting point position of col filter.
+%
+%           row_label   :   char array. To label 'low', 'hi', etc. (Optional)
+%           col_label   :   char array. To label 'low', 'hi', etc. (Optional)
+%
+%       Methods:
+%           filter2d:   Constructor. Could be called as:
+%                           1) f = filte2d(f1d_row, f1d_col)
+%                           2) f = filter2d
+%                       where f1d_row and f1d_col are both filter1d objects, f is a filter2d object.
+
+%% Data Structure of 1D/2D filter banks
+% * *1D Filter Bank: array of filter1d objects.*
+% * *2D Filter Bank: array of filter2d objects.*
+% * *<matlab:edit('FilterBankTensor.m') FilterBankTensor.m>: Construct 2D Filter Bank by two 1D Filter Banks for each dimension.*
+%
+% *_Notice that we always put lowpass filter at the first place in filter banks:_* 
+% [lowpass, highpass1, highpass2, ...]. 
+
+% Example of 1D filter bank
+HaarFilterBank = Haar1d         % Construct Haar Filter Bank
+Lowpass = HaarFilterBank(1)     % Lowpass filter
+Highpass = HaarFilterBank(2)    % Highpass filter
+
+%%
+
+% Example of 2D filter bank
+Haar2d = FilterBankTensor(HaarFilterBank, HaarFilterBank)   % Construct 2D Haar Filter Bank
+LL = Haar2d(1)
+LH = Haar2d(2)
+HL = Haar2d(3)
+HH = Haar2d(4)
+
+%% Implementation of 1D filter banks
+% 
+% * <matlab:edit('Haar1d.m') Haar1d.m>
+% * <matlab:edit('Daubechies8_1d.m') Daubechies8_1d.m>
+% * <matlab:edit('FirstStageFilter1d.m') FirstStageFilter1d.m>
+% * <matlab:edit('FirstStageFilterShift1d.m') FirstStageFilterShift1d.m>
+% * <matlab:edit('Tree1Filter1d.m') Tree1Filter1d.m>
+% * <matlab:edit('Tree2Filter1d.m') Tree2Filter1d.m>
+
+HaarFB = Haar1d;                    % Haar Filter Bank
+D8FB = Daubechies8_1d;              % Daubechies 8 Filer Bank
+
+FSFB = FirstStageFilter1d;          % Dual Tree Fist Stage Filter Bank a_0
+FS2FB = FirstStageFilterShift1d;    % Dual Tree First Stage Shift Filter Bank for Tree2
+DT1FB = Tree1Filter1d;              % Dual Tree Filter Bank for Tree 1
+DT2FT = Tree2Filter1d;              % Dual Tree Filter Bank for Tree 2
+%% Implementation of 2D filter banks
+% 
+% * <matlab:edit('Daubechies8_2d.m') Daubechies8_2d.m>
+D8FB_2d = Daubechies8_2d;           % 2D Daubechies 8 Filter Bank
+%%
+% _*2D Dual Tree Filter Banks*_
+%
+% * <matlab:edit('DualTreeFilter2d.m') DualTreeFilter2d.m>
+% * <matlab:edit('DualTreeFilter2d_SplitHipass.m') DualTreeFilter2d_SplitHipass.m>
+
+% Output: 
+%   First Stage Filter Banks:   FS_FB{row_tree}{col_tree}{band}
+%   Later Stage Filter Banks:   FB{row_tree}{col_tree}{band}
+%   row_tree, col_tree = 1, 2
+[FS_FB, FB] = DualTreeFilter2d;             % band = 1 : 3
+[FS_FB, FB] = DualTreeFilter2d_SplitHipass  % band = 1 : 8
+
+
+
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
