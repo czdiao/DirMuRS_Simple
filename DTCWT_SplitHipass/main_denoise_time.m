@@ -23,11 +23,13 @@ s = double(imread(imgName));
 
 
 %% Input: Choose Transform
-% Transform = 'DT';
-Transform = 'DT_SplitHigh';
+Transform = 'DT';
+% Transform = 'DT_SplitHigh';
 % Transform = 'DT_SplitHighLow';
 
 nlevel = 5;
+
+fprintf('Denoising using Transform: %s, for %d levels...\n', Transform, nlevel);
 
 % load filters
 [FS_filter1d, fb1d] = DualTree_FilterBank_Selesnick;
@@ -55,7 +57,8 @@ len = length(sigmaN);
 %% Denoising
 PSNR_val = zeros(1, len);
 
-
+fprintf('\nNoise level = %s\n', mat2str(sigmaN));
+disp('PSNR = ');
 
 for i = 1:len
     
