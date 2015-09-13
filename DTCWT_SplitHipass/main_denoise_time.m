@@ -13,8 +13,9 @@ clear;
 
 %% Set Home Path and Add to Path
 % HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
-% HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
-% addpath(genpath(HOME_PATH));
+HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
+OLD_CODE = [HOME_PATH 'old_code'];
+addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
 
 
 %% Input: Choose Picture (in HOME_PATH/Pics/)
@@ -23,9 +24,9 @@ s = double(imread(imgName));
 
 
 %% Input: Choose Transform
-Transform = 'DT';
+% Transform = 'DT';
 % Transform = 'DT_SplitHigh';
-% Transform = 'DT_SplitHighLow';
+Transform = 'DT_SplitHighLow';
 
 nlevel = 5;
 
@@ -57,6 +58,7 @@ len = length(sigmaN);
 %% Denoising
 PSNR_val = zeros(1, len);
 
+fprintf('\nDenoising the image: %s', imgName);
 fprintf('\nNoise level = %s\n', mat2str(sigmaN));
 disp('PSNR = ');
 

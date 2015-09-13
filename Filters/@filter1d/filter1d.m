@@ -106,6 +106,7 @@ classdef filter1d
         
         function f1d_flip = conjflip(f1d)   
             %%Conjugate flip of the filter
+            % a_new(n) = conj(a(-n))
             len = length(f1d.filter);
             flip_start_pt = (f1d.start_pt + len - 1) * (-1);
             
