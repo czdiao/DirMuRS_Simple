@@ -13,13 +13,13 @@ clear;
 
 %% Set Home Path and Add to Path
 % HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
-HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
-OLD_CODE = [HOME_PATH 'old_code'];
-addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
+% HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
+% OLD_CODE = [HOME_PATH 'old_code'];
+% addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
 
 
 %% Input: Choose Picture (in HOME_PATH/Pics/)
-imgName    = 'Boat.png';
+imgName    = 'Lena512.png';
 s = double(imread(imgName));
 
 
@@ -34,6 +34,9 @@ fprintf('Denoising using Transform: %s, for %d levels...\n', Transform, nlevel);
 
 % load filters
 [FS_filter1d, fb1d] = DualTree_FilterBank_Selesnick;
+% [FS_filter1d, fb1d] = DualTree_FilterBank_test;
+% [FS_filter1d, fb1d] = DualTree_FilterBank;
+
 
 % To split lowpass
 [u1, u2] = SplitLowOrig;
@@ -62,6 +65,8 @@ fprintf('\nDenoising the image: %s', imgName);
 fprintf('\nNoise level = %s\n', mat2str(sigmaN));
 disp('PSNR = ');
 
+tic;
+count = 0;
 for i = 1:len
     
     sigma = sigmaN(i);
@@ -72,7 +77,7 @@ for i = 1:len
     
     x = s + n;
     
-    y = denoise_BiShrink_new(x, nlevel, sigma, FS_filter1d, fb1d, nor, Transform, u_hi, u_low);
+    y = denoise_BiShrink(x, nlevel, sigma, FS_filter1d, fb1d, nor, Transform, u_hi, u_low);
     
     %     y = denoise_BLSGSM(x,5, sigma, FS_filter2d, filter2d);
 
@@ -80,10 +85,14 @@ for i = 1:len
     % Calculate the PSNR value
     PSNR_val(i) = PSNR(s,y);
     
-    fprintf('    %g', PSNR_val(i));
+    cprintf('blue','    %g', PSNR_val(i));
+    count = count + 1;
 end
-
 fprintf('\n');
+
+AverageTime = toc/count;
+fprintf('\nAverage time for denoising %d noisy pictures is %f seconds.\n', count, AverageTime);
+
 
 
 

@@ -1,4 +1,4 @@
-function [ fb2d ] = Daubechies8_2d
+function [ fb2d ] = Daubechies8_2d_old
 %Daubechies8Filter2d 
 %   2D Daubechies8 Filter Bank
 

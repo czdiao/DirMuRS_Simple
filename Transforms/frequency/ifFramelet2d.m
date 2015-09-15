@@ -1,6 +1,8 @@
-function [ fdata ] = ifFramelet2d_new( w, J, FfilterBank_col, FfilterBank_row )
-%IFFRAMELET2D_NEW Summary of this function goes here
-%   Detailed explanation goes here
+function [ fdata ] = ifFramelet2d( w, J, FfilterBank_col, FfilterBank_row )
+%IFFRAMELET2D 2-D Inverse of Frequency-based Framelet Transform
+%
+%   Chenzhe Diao
+
 
 
 if nargin == 3

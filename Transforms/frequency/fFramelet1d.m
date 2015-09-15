@@ -1,5 +1,5 @@
-function [ w ] = fFramelet1d_new( fdata, J, FfilterBank )
-%FFRAMELET1D_NEW 1D Framelet Transform in Frequency Domain.
+function [ w ] = fFramelet1d( fdata, J, FfilterBank )
+%FFRAMELET1D 1D Framelet Transform in Frequency Domain.
 %Input:
 %   fdata:
 %       1D data in frequency domain.

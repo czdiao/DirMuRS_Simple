@@ -1,4 +1,4 @@
-function [ y ] = iDualTree2d( w, J, FS_filter2d, filterbank2d)
+function [ y ] = iDualTree2d_old( w, J, FS_filter2d, filterbank2d)
 %IDUALTREE2D Inverse transform of 2D Dual Tree Complex Wavelet Transform
 %   Input:
 %	w, J, FS_filter2d, filer2d are the same as explained in DualTree2d() function

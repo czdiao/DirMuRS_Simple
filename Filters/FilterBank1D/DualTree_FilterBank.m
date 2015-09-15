@@ -1,5 +1,6 @@
 function [ FS_filter1d, FilterBank1d ] = DualTree_FilterBank
 %DUALTREE2D_FB Filter Bank for Dual Tree Complex Wavelet Transform.
+%   This is the filter bank claimed in Zhao's paper.
 %Output:
 %   FS_filter1d:
 %       First Stage Filter Banks. Cell array with 2 cells.

@@ -1,4 +1,4 @@
-function [ FS_filter2d, FilterBank2d ] = DualTreeFilter2d_SplitHipass
+function [ FS_filter2d, FilterBank2d ] = DualTreeFilter2d_SplitHipass_old
 %DUALTREEFILTER2D_SPLITHIPASS Construct 2D Filter Bank for Dual Tree Split
 %Highpass
 

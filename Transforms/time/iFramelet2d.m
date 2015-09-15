@@ -1,6 +1,6 @@
-function [ data ] = iFramelet2d_new( w, J, FilterBank_col, FilterBank_row )
-%IFRAMELET2D_NEW Summary of this function goes here
-%   Detailed explanation goes here
+function [ data ] = iFramelet2d( w, J, FilterBank_col, FilterBank_row )
+%IFRAMELET2D 2-D Inverse Framelet Transform
+%
 %
 %   Author: Chenzhe Diao
 

@@ -1,4 +1,4 @@
-function  w  = analysis2d( v, af )
+function  w  = analysis2d_old( v, af )
 %analysis2d Apply 2d analysis filter on 2d signal
 %   Apply a 2d (tensor-product) filter on a 2d signal
 %

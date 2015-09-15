@@ -36,8 +36,8 @@ no = 1;
 
 switch Transform
     case('DT')
-        transform_func = @(x, scale) DualTree2d_new(x, scale, FS_filter1d, fb1d);
-        itransform_func = @(W, scale) iDualTree2d_new(W, scale, FS_filter1d, fb1d);
+        transform_func = @(x, scale) DualTree2d(x, scale, FS_filter1d, fb1d);
+        itransform_func = @(W, scale) iDualTree2d(W, scale, FS_filter1d, fb1d);
     case('DT_SplitHigh')
         u_hi = varargin{1};
         transform_func = @(x, scale) DualTree2d_SplitHigh(x, scale, FS_filter1d, fb1d, u_hi);

@@ -1,4 +1,4 @@
-function [ w ] = DualTree2d_new( x, J, FS_fb1d, fb1d )
+function [ w ] = DualTree2d( x, J, FS_fb1d, fb1d )
 %DUALTREE2D_NEW Complex Dual Tree Wavelet Transform.
 %Input:
 %   x:

@@ -1,3 +1,5 @@
+% Old code, cannot be used anymore
+
 clear;
 
 nlevel = 5;     % level of decomposition

@@ -1,4 +1,4 @@
-function [ w ] = DualTree2d( x, J, FS_filter2d, filterbank2d)
+function [ w ] = DualTree2d_old( x, J, FS_filter2d, filterbank2d)
 %DUALTREE2D Implementation of 2D Dual Tree Complex Wavelet Transform
 %   Input:
 %	x	   :	input 2d signal

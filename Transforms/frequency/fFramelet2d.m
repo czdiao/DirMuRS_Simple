@@ -1,5 +1,5 @@
-function [ w ] = fFramelet2d_new( fdata, J, FfilterBank_col, FfilterBank_row )
-%FFRAMELET2D_NEW 2D Framelet Transform in Frequency Domain.
+function [ w ] = fFramelet2d( fdata, J, FfilterBank_col, FfilterBank_row )
+%FFRAMELET2D 2D Framelet Transform in Frequency Domain.
 %Input:
 %   fdata:
 %       2D data in frequency domain.

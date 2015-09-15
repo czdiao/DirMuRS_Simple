@@ -1,6 +1,6 @@
-function [ w ] = Framelet1d_new( data, J, FilterBank )
-%FRAMELET1D_NEW Summary of this function goes here
-%   Detailed explanation goes here
+function [ w ] = Framelet1d( data, J, FilterBank )
+%FRAMELET1D 1-D Framelet Transform
+%
 %
 %   Author: Chenzhe Diao
 

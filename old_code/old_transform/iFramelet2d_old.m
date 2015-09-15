@@ -1,4 +1,4 @@
-function [ y ] = iFramelet2d( w, J, FS_filter2d, filterbank2d )
+function [ y ] = iFramelet2d_old( w, J, FS_filter2d, filterbank2d )
 %iFramelet2d 2D Inverse Framelet Transform
 %   Inverse of Framelet2d() function
 %

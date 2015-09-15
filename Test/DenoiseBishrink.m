@@ -1,6 +1,9 @@
 function [ y ] = DenoiseBishrink( x, J, Nsig, filter, nor )
-%UNTITLED7 Summary of this function goes here
-%   Detailed explanation goes here
+%Denoise Using Framelets and Bivariate Shrinkage
+%
+% Using old method to input precalculated filter norms.
+%
+%   Chenzhe Diao
 
 
 % symmetric extension
@@ -10,14 +13,14 @@ x = symext(x,buffer_size);
 
 
 
-W = Framelet2d_new(x, J, filter);
+W = Framelet2d(x, J, filter);
 
 W = normcoef(W,J,nor);
 
 W = thr_bishrink(W, Nsig);
 
 W = unnormcoef(W,J,nor);
-y = iFramelet2d_new(W, J, filter);
+y = iFramelet2d(W, J, filter);
 
 ind = buffer_size+1 : buffer_size+L;
 y = y(ind,ind);

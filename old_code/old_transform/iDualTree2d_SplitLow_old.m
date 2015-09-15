@@ -1,4 +1,4 @@
-function [ y ] = iDualTree2d_SplitLow( w, J, FS_filter2d, filter2d)
+function [ y ] = iDualTree2d_SplitLow_old( w, J, FS_filter2d, filter2d)
 %iDualTree2d_SplitLow
 %   Inverse of the Split Lowpass and Highpass of DualTree2d transform.
 %   Inverse of DualTree2d_SplitLow() function.

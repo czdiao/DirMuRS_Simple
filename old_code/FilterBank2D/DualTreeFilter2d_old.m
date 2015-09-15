@@ -1,4 +1,4 @@
-function [ FS_filter2d, FilterBank2d ] = DualTreeFilter2d
+function [ FS_filter2d, FilterBank2d ] = DualTreeFilter2d_old
 %DUALTREEFILTER2D Construct 2D filter bank for Dual Tree.
 %   Output in standard 2d Filter Bank (array) structure
 

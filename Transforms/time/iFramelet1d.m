@@ -1,5 +1,5 @@
-function [ data ] = iFramelet1d_new( w, J, FilterBank )
-%IFRAMELET1D_NEW Summary of this function goes here
+function [ data ] = iFramelet1d( w, J, FilterBank )
+%IFRAMELET1D 1-D Inverse of Framelet Transform
 %   Detailed explanation goes here
 %
 %   Author: Chenzhe Diao

@@ -27,8 +27,8 @@ x_noisy = symext(x_noisy,buffer_size);
 x_true = symext(x_true,buffer_size);
 
 
-W = Framelet2d_new(x_noisy, nlevel, filter);
-W_true = Framelet2d_new(x_true, nlevel, filter);
+W = Framelet2d(x_noisy, nlevel, filter);
+W_true = Framelet2d(x_true, nlevel, filter);
 
 
 %% Test beta distribution
@@ -245,8 +245,8 @@ title('Conditional Expectation $E(\sigma|\sigma_y)$ from experiments', 'Interpre
 % W = unnormcoef(W,nlevel,nor);
 % W_true = unnormcoef(W_true,nlevel,nor);
 % 
-% y = iFramelet2d_new(W, nlevel, filter);
-% y_true =  iFramelet2d_new(W_true, nlevel, filter);
+% y = iFramelet2d(W, nlevel, filter);
+% y_true =  iFramelet2d(W_true, nlevel, filter);
 % 
 % ind = buffer_size+1 : buffer_size+L;
 % y = y(ind,ind);

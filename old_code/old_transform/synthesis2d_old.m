@@ -1,4 +1,4 @@
-function v = synthesis2d( w, filterbank2d )
+function v = synthesis2d_old( w, filterbank2d )
 %SYNTHESIS2D Synthesis operation for 2d
 %   Input:
 %                  w:   Decomposed signals. Cell array. 1*num_sig cells in total.

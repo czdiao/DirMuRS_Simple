@@ -7,9 +7,11 @@ L = 8*2^nlevel; % size of image
 x = zeros(L,L);
 
 
-[FS_filter1d, FilterBank1d] = DualTree_FilterBank_Selesnick;
+% [FS_filter1d, FilterBank1d] = DualTree_FilterBank_Selesnick;
+[FS_filter1d, FilterBank1d] = DualTree_FilterBank_test;
 
-w = DualTree2d_new(x, nlevel, FS_filter1d, FilterBank1d);
+
+w = DualTree2d(x, nlevel, FS_filter1d, FilterBank1d);
 
 J = 3;  % level to plot DAS
 N = L/2^J;  % center position

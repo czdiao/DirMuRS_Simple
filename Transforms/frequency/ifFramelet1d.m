@@ -1,5 +1,5 @@
-function [ fdata ] = ifFramelet1d_new( w, J, FfilterBank )
-%IFFRAMELET1D_NEW Inverse of Frequency Based Framelet Transform in 1D.
+function [ fdata ] = ifFramelet1d( w, J, FfilterBank )
+%IFFRAMELET1D Inverse of Frequency Based Framelet Transform in 1D.
 %Input:
 %   w:
 %       Framelet coeff in frequency domain. Cell array. w{ilevel}{iband},

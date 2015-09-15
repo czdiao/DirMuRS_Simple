@@ -1,4 +1,4 @@
-function [ w ] = DualTree2d_SplitLow( x, J, FS_filter2d, filterbank2d)
+function [ w ] = DualTree2d_SplitLow_old( x, J, FS_filter2d, filterbank2d)
 %DualTree2d_SplitLow
 %   Split the lowpass filter of the "DualTree2d split highpass" transform.
 %   Implemented by post-possessing.

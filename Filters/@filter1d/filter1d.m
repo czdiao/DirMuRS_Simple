@@ -178,6 +178,12 @@ classdef filter1d
             end
         end
         
+        function tplot(obj)
+            len = length(obj.filter);
+            x = obj.start_pt:(obj.start_pt+len-1);
+            stem(x, obj.filter);
+        end
+        
     end
     
     

@@ -1,4 +1,4 @@
-function [ W_new ] = PostSplit2d( W, u, dim )
+function [ W_new ] = PostSplit2d_old( W, u, dim )
 %PostSplit2d
 %   Split the filter with (u1, u2) by post-possessing the wavelet coefficients
 %   Input:

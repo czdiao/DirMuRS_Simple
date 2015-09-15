@@ -1,4 +1,4 @@
-function [ W_new ] = PostCombine2d( W1, u1, W2, u2, dim  )
+function [ W_new ] = PostCombine2d_old( W1, u1, W2, u2, dim  )
 %PostCombine2d
 %   Combine the splitted filter (with u1, u2) by post-possessing the
 %       wavelet coefficients. Inverse of PostSplit2d() function.

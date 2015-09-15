@@ -1,5 +1,5 @@
-function [ y ] = iDualTree2d_new( w, J, FS_fb1d, fb1d )
-%IDUALTREE2D_NEW Inverse Complex Dual Tree Wavelet Transform.
+function [ y ] = iDualTree2d( w, J, FS_fb1d, fb1d )
+%IDUALTREE2D Inverse Complex Dual Tree Wavelet Transform.
 %Input:
 %   w:
 %       Wavelet coefficients of DTCWT.

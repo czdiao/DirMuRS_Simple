@@ -1,6 +1,6 @@
-function [ w ] = Framelet2d_new( data, J, FilterBank_col, FilterBank_row )
-%FRAMELET2D_NEW Summary of this function goes here
-%   Detailed explanation goes here
+function [ w ] = Framelet2d( data, J, FilterBank_col, FilterBank_row )
+%FRAMELET2D 2-D Framelet Transform
+%
 %
 %   Author: Chenzhe Diao
 

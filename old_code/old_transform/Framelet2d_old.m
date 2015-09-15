@@ -1,4 +1,4 @@
-function [ w ] = Framelet2d( x, J, FS_filter2d, filterbank2d )
+function [ w ] = Framelet2d_old( x, J, FS_filter2d, filterbank2d )
 %Framelet2d 2D framelet transform
 %   Input:
 %	x	:	2D input signal
