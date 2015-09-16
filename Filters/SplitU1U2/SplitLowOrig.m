@@ -1,6 +1,8 @@
 function [ u1, u2 ] = SplitLowOrig
-%SPLITLOWORIG Summary of this function goes here
-%   Detailed explanation goes here
+%SPLITLOWORIG Two filters. Could be used as undecimated filter bank.
+%   This is used to split the Dual Tree lowpass filters.
+%
+%   Chenzhe Diao
 
 
 u1_filter = [-0.60681876962335599886786626353146e0 -0.49991154192621583718062920651918e0 0.10690722769714197302003653746564e0];

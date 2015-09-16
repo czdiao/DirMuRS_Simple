@@ -2,6 +2,7 @@ function angle = FrameAngle(f1, f2)
 % FrameAngle
 %   Calculate the cos(theta) = <f1,f2>/(|f1|*|f2|), where f1 and f2 are two
 %   matrices of the same size. (also works for vectors.)
+%   Chenzhe Diao
 
 
 if size(f2)~=size(f1)
