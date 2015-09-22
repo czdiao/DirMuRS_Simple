@@ -1,11 +1,32 @@
-function [ filter ] = FirstStageFilterShift1d
+function [ filter ] = FirstStageFilterShift1d(shift_method)
 %FIRSTSTAGEFILTERSHIFT1D Dual Tree First Stage Filter by Selesnick
 %   First Stage Filter for Tree 2, lowpass is the shifted version as Tree 1
 %   lowpass: a02(.)=a01(.-1)
+%
+%Input:
+%   shift_method:
+%       Choose between 'shift', 'flip'. Default is 'flip', as Selesnick's
+%       original code.
+%
+%   This is the same as Zhao and Han's paper
 
-lo_filter = [-1, 1, 4+sqrt(15), 4+sqrt(15), 1, -1, 4-sqrt(15), 4-sqrt(15)]/16;
-lo_start_pt = -2;
-lo = filter1d(lo_filter, lo_start_pt, 'low');
+if nargin<1
+    shift_method = 'flip';
+end
+
+a01 = FirstStageFilter1d;
+switch shift_method
+    case('flip')
+        % Method 1, flip
+        lo = a01(1).conjflip;
+        lo.start_pt = -4;
+    case('shift')
+        % Method 2, shift
+        lo = a01(1);
+        lo.start_pt = -2;
+    otherwise
+        error('Wrong input!');
+end
 
 %% Original
 hi = CQF(lo);

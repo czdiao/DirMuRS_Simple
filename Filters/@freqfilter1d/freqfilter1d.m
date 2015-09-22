@@ -114,8 +114,8 @@ classdef freqfilter1d
                 end
                 
                 y = fftshift(abs(obj(i).ffilter));
-                figure;
-                plot(x, y, varargin{:}); xlim([-pi,pi]);
+%                 figure;
+                plot(x, y, varargin{:}); xlim([-pi,pi]); hold on;
                 set(gca,'XTick',linspace(-pi,pi,5)); grid on;
             end
         end %plot_ffilter

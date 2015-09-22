@@ -1,4 +1,4 @@
-function [ FS_filter1d, FilterBank1d ] = DualTree_FilterBank
+function [ FS_filter1d, FilterBank1d ] = DualTree_FilterBank_Zhao
 %DUALTREE2D_FB Filter Bank for Dual Tree Complex Wavelet Transform.
 %   This is the filter bank claimed in Zhao's paper.
 %Output:

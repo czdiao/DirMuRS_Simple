@@ -24,8 +24,8 @@ function nor = CalFilterNormDT2D(FS_filter1d, fb1d, nlevel, Transform, varargin)
 %   Chenzhe Diao
 %   Sept, 2015
 
-disp('========================================');
-disp('Calculating Filter Norms:');
+% disp('=====================Calculating Filter Norms:=========================');
+fprintf('\nCalculating Filter Norms:');
 fprintf('\tLevel = ');
 tic;
 
@@ -67,16 +67,16 @@ for scale = 1:nlevel
             end
         end
     end
-    fprintf('\t%d,', scale);
+    fprintf('    %d,', scale);
 end
 
 fprintf('\n');
 
+ElapsedTime = toc;
 
-disp('Finished Calculating Filter norms!');
-toc;
+disp(['Finished Calculating Filter norms in ', num2str(ElapsedTime), ' seconds!']);
 
-disp('========================================');
+% disp('==============================================');
 
 end
 

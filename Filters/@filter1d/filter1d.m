@@ -1,8 +1,9 @@
 classdef filter1d
     %FILTER1D Class for 1d filter
     %   Properties:
-    %       filter  :   1d vector
+    %       filter  :   1d row vector
     %       start_pt:   integer
+    %       norm    :   L2 norm, dependent variable
     %       label   :   char array. To label 'low', 'hi', etc. (Optional)
     %
     %   Methods:
@@ -57,12 +58,27 @@ classdef filter1d
     %                           This function can accept filter array. (filter bank)
     %                           1)  fb1d_new = checkfilter(fb1d, rate)
     %
+    %       tplot:          Stem plot the filter in time domain.
+    %                           1)  tplot(f1d)
+    %       upsamplefilter: Upsample the filter sequence.
+    %                           1)  f1d_new = upsamplefilter(f1d, rate)
+    %                           2)  f1d_new = f1d.upsamplefilter(rate)
+    %       plus:           Add up two filter1d objects.
+    %                           1)  f1d_new = f1d1 + f1d2
+    %       times:          Scalar Multiplication. Must use dot product.
+    %                       and put the scalar at the front.
+    %                           1)  f1d_new = C.*f1d;
+    %       get.norm:           L2 norm of the filter.
+    %                           1)  n = norm(f1d)
+    %                           2)  n = f1d.norm
+    %
     %   Author: Chenzhe Diao
     %   Data:   July, 2015
     
     properties
         filter = [];    % filter, 1d row vector
         start_pt = 0;   % integer, starting point of the filter
+        norm;           % Dependent variable for L2 norm, see get.norm method
         label = '';     % label of the filter, char array. 'low', 'high', etc.
     end
     
@@ -130,7 +146,11 @@ classdef filter1d
             len = length(tfilters);
             ff1d(len) = freqfilter1d;
             for i = 1:len
-                num_zeros = N-length(tfilters(i).filter);
+                if nargin >=2
+                    num_zeros = N-length(tfilters(i).filter);
+                else
+                    num_zeros = 0;
+                end
                 ff = [tfilters(i).filter, zeros(1,num_zeros)];
                 ff = circshift2d(ff, 0, tfilters(i).start_pt);
                 ff = fft(ff);
@@ -182,6 +202,47 @@ classdef filter1d
             len = length(obj.filter);
             x = obj.start_pt:(obj.start_pt+len-1);
             stem(x, obj.filter);
+        end
+        
+        function f1d_new = upsamplefilter(f1d, rate)
+            f1d_new = f1d;
+            f1d_new.filter = tupsample(f1d.filter, rate);
+            f1d_new.start_pt = f1d.start_pt*rate;
+        end
+        
+        function f1d_new = plus(f1d1, f1d2)
+            f1d_new = f1d1;
+            
+            if f1d1.start_pt > f1d2.start_pt
+                f1d1 = f1d2;
+                f1d2 = f1d_new;
+            end
+            
+            f1d_new.start_pt = f1d1.start_pt;
+            d1 = f1d2.start_pt - f1d1.start_pt;
+            f1d2.filter = [zeros(1,d1), f1d2.filter];
+            
+            d2 = length(f1d1.filter) - length(f1d2.filter);
+            if d2>=0
+                f2 = [f1d2.filter, zeros(1, d2)];
+                f1 = f1d1.filter;
+            else
+                f1 = [f1d1.filter, zeros(1, -d2)];
+                f2 = f1d2.filter;
+            end
+            
+            f1d_new.filter = f1 + f2;
+            
+        end
+        
+        function f1d_new = times(C, f1d)
+            f1d_new = f1d;
+            f1d_new.filter = f1d.filter * C;
+        end
+        
+        function n = get.norm(f1d)
+            n = sum(abs(f1d.filter).^2);
+            n = sqrt(n);
         end
         
     end

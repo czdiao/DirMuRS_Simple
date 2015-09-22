@@ -1,6 +1,8 @@
 function [ filter ] = FirstStageFilter1d
 %FIRSTSTAGEFILTER Dual Tree First Stage Filter by Selesnick
 %   Output in standard data structure of 1D filter bank
+%
+%   This is the same as Zhao and Han's paper
 
 lo_filter = [-1, 1, 4+sqrt(15), 4+sqrt(15), 1, -1, 4-sqrt(15), 4-sqrt(15)]/16;
 lo_start_pt = -3;

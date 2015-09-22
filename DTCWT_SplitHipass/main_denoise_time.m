@@ -12,10 +12,11 @@
 clear;
 
 %% Set Home Path and Add to Path
-% HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
+HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
 % HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
-% OLD_CODE = [HOME_PATH 'old_code'];
-% addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
+OLD_CODE = [HOME_PATH 'old_code'];
+path(pathdef);
+addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
 
 
 %% Input: Choose Picture (in HOME_PATH/Pics/)
@@ -62,7 +63,7 @@ len = length(sigmaN);
 PSNR_val = zeros(1, len);
 
 fprintf('\nDenoising the image: %s', imgName);
-fprintf('\nNoise level = %s\n', mat2str(sigmaN));
+fprintf('\nNoise level: %s\n', mat2str(sigmaN));
 disp('PSNR = ');
 
 tic;
@@ -91,7 +92,7 @@ end
 fprintf('\n');
 
 AverageTime = toc/count;
-fprintf('\nAverage time for denoising %d noisy pictures is %f seconds.\n', count, AverageTime);
+fprintf('\nAverage time for denoising %d noisy pictures is %f seconds.\n\n', count, AverageTime);
 
 
 
