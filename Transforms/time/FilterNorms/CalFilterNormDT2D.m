@@ -11,7 +11,7 @@ function nor = CalFilterNormDT2D(FS_filter1d, fb1d, nlevel, Transform, varargin)
 %        nlevel: 
 %           level of decomposition
 %        Transform:
-%           'DT', 'DT_SplitHigh', 'DT_SplitHighLow'
+%           'DT', 'DT_SplitHigh', 'DT_SplitHighLow', 'DT_SplitHighLowComplex'
 % Optional Input:
 %        varargin{1}:
 %           u_hi(2), 2 filters to split the highpass filters.
@@ -47,6 +47,11 @@ switch Transform
         u_low = varargin{2};
         transform_func = @(x, scale) DualTree2d_SplitHighLow(x, scale, FS_filter1d, fb1d, u_hi, u_low);
         itransform_func = @(W, scale) iDualTree2d_SplitHighLow(W, scale, FS_filter1d, fb1d, u_hi, u_low);
+    case('DT_SplitHighLowComplex')
+        u_hi = varargin{1};
+        u_low = varargin{2};
+        transform_func = @(x, scale) DualTree2d_SplitHighLowComplex(x, scale, FS_filter1d, fb1d, u_hi, u_low);
+        itransform_func = @(W, scale) iDualTree2d_SplitHighLowComplex(W, scale, FS_filter1d, fb1d, u_hi, u_low);
     otherwise
         error('Unknown Transform Type!');
 end

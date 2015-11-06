@@ -66,11 +66,40 @@ classdef filter1d
     %       plus:           Add up two filter1d objects.
     %                           1)  f1d_new = f1d1 + f1d2
     %       times:          Scalar Multiplication. Must use dot product.
-    %                       and put the scalar at the front.
+    %                       and put the scalar at the front. Works for
+    %                       filter bank.
     %                           1)  f1d_new = C.*f1d;
     %       get.norm:           L2 norm of the filter.
     %                           1)  n = norm(f1d)
     %                           2)  n = f1d.norm
+    %       Real:           Real part of the filter bank. This works for
+    %                       filter bank.
+    %                           1)  fb1d_real = Real(fb1d)
+    %       Imag:           Imaginary part of the filter bank. This works
+    %                       for filter bank.
+    %                           1)  fb1d_imag = Imag(fb1d)
+    %       conj:           Conjugate of the filter bank.
+    %                           1)  fb1d_conj = conj(fb1d)
+    %       freqshift:      Shift the filter bank in frequency domain.
+    %                       \hat{fb1d_new}(xi) = \hat{fb1d}(xi - xi0)
+    %                           1)  fb1d_new = freqshift(fb1d, xi0)
+    %
+    %       ImpulseResponse:
+    %                       Impulse Response of the filter.
+    %                       The k-th element of the filter. Notice that we
+    %                       only accept 1 integer k as input, no array.
+    %                           1)  ir = ImpulseResponse(f1d, k)
+    %
+    %       FreqResponse:   Frequency Response of the filter.
+    %                       Output \hat{u}(\xi), 2pi periodic.
+    %                       Input xi could be a vector or matrix, the
+    %                       output would be of the same size.
+    %                           1)  fr = FreqResponse(f1d, xi)
+    %
+    %       IntNegReal:     Integration of the Filter on the negative
+    %                       frequency domain. 
+    %                           \int_{-pi}^0 \hat{u}(\xi) d\xi
+    %                           1)  Int = IntNegReal(u);
     %
     %   Author: Chenzhe Diao
     %   Data:   July, 2015
@@ -235,14 +264,154 @@ classdef filter1d
             
         end
         
-        function f1d_new = times(C, f1d)
-            f1d_new = f1d;
-            f1d_new.filter = f1d.filter * C;
+        function fb1d_new = times(C, fb1d)
+            % scalar product
+            fb1d_new = fb1d;
+            N = length(fb1d);
+            for i = 1:N
+                fb1d_new(i).filter = fb1d(i).filter * C;
+            end
         end
         
         function n = get.norm(f1d)
             n = sum(abs(f1d.filter).^2);
             n = sqrt(n);
+        end
+        
+        function fb1d_real = Real(fb1d)
+            %The real part of the filter in a filter bank
+            len = length(fb1d);
+            fb1d_real = fb1d;
+            for i = 1:len
+                fb1d_real(i).filter = real(fb1d(i).filter);
+            end
+        end
+        
+        function fb1d_imag = Imag(fb1d)
+            %The imaginary part of the filter in a filter bank
+            len = length(fb1d);
+            fb1d_imag = fb1d;
+            for i = 1:len
+                fb1d_imag(i).filter = imag(fb1d(i).filter);
+            end
+        end
+        
+        function fb1d_conj = conj(fb1d)
+            %%Conjugate of the filter bank.
+            fb1d_conj = fb1d;
+            N = length(fb1d);
+            for i = 1:N
+                fb1d_conj(i).filter = conj(fb1d(i).filter);
+            end
+        end
+        
+        function fb1d_new = freqshift(fb1d, xi0)
+            %%Shift the filter bank in Frequency domain by xi0
+            %   \hat{fb1d_new}(xi) = \hat{fb1d}(xi - xi0)
+            fb1d_new = fb1d;
+            N = length(fb1d);
+            
+            for i = 1:N
+                len = length(fb1d(i).filter);
+                ind = fb1d(i).start_pt;
+                for k = 1:len
+                    fb1d_new(i).filter(k) = fb1d(i).filter(k) * exp(1i*ind*xi0);
+                    ind = ind + 1;
+                end
+            end
+        end
+        
+        function ir = ImpulseResponse(f1d, k)
+            %%Impulse Response:
+            % Return u(k)
+            % Only accept integer k input, not array.
+            
+            pt = f1d.start_pt;
+            l = length(f1d.filter);
+            
+            if k<pt
+                ir = 0;
+            elseif k>= pt+l
+                ir = 0;
+            else
+                ind = k-pt + 1;
+                ir = f1d.filter(ind);
+            end
+            
+        end
+        
+        function fr = FreqResponse(f1d, xi)
+            %%The frequency response of the filter. \hat{u}(exp(i\xi))
+            % The function could take vector input xi.
+            
+            pt = f1d.start_pt;
+            L = length(f1d.filter);
+            
+            xi_reshape = xi(:); %column vector
+            y = exp(-1i*xi_reshape);
+            fr_reshape = zeros(size(y));
+            
+            for k = pt:(pt+L-1)
+                fr_reshape = fr_reshape + y.^k * f1d.ImpulseResponse(k);
+            end
+            
+            fr = reshape(fr_reshape, size(xi));
+            
+        end
+        
+        function fplot(obj, varargin)
+            xi = -pi:0.01:pi;
+            y = obj.FreqResponse(xi);
+            plot(xi, abs(y), varargin{:}); xlim([-pi,pi]); hold on;
+            set(gca,'XTick',linspace(-pi,pi,5)); grid on;
+        end
+        
+        function Int = IntNegReal(u)
+            %%Integration of real filter in the frequency domain.
+            %   Only works for \hat{u} real on \xi \in [-pi, pi]
+            %       which means: u(-k) = conj(u(k))
+            %   \int_{-pi}^0 \hat{u}(\xi) d\xi
+            
+            max_ind = -u.start_pt;
+            Int = 0;
+            for ind = 1:2:max_ind
+                Int = Int - 4 * imag(u.ImpulseResponse(ind))/ind;
+            end
+            
+            Int = Int + u.ImpulseResponse(0)*pi;
+        end
+        
+        function Int = IntPosReal(u)
+            
+            
+            max_ind = -u.start_pt;
+            Int = 0;
+            for ind = 1:2:max_ind
+                Int = Int + 4 * imag(u.ImpulseResponse(ind))/ind;
+            end
+            
+            Int = Int + u.ImpulseResponse(0)*pi;
+        end
+        
+        function var = Variance(f1d)
+            %%Variance of the filter
+            % This is invariant w.r.t. shift  of the filter.
+            
+            n = f1d.norm;
+            f = abs(f1d.filter).^2/n^2;
+            Len = length(f);
+            s = 1:Len;
+            E = f*s'; % expectation
+            var = (s-E).^2 * f';
+            
+        end
+        
+        function u2 = sq(u)
+            %%Square in Frequency domain
+            %   u2(z) = u(z)u^*(z), positive on unit circle
+            
+            u2 = u.convfilter(u.conjflip);
+           
         end
         
     end

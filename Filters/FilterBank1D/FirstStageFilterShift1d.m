@@ -14,6 +14,8 @@ if nargin<1
     shift_method = 'flip';
 end
 
+shift_method = 'shift';
+
 a01 = FirstStageFilter1d;
 switch shift_method
     case('flip')
@@ -27,6 +29,8 @@ switch shift_method
     otherwise
         error('Wrong input!');
 end
+
+hi = filter1d;
 
 %% Original
 hi = CQF(lo);

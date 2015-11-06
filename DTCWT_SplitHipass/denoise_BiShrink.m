@@ -57,6 +57,10 @@ switch Transform
         u_hi = varargin{1};
         u_low = varargin{2};
         W = DualTree2d_SplitHighLow(x, J, FS_filter1d, fb1d, u_hi, u_low);
+    case('DT_SplitHighLowComplex')
+        u_hi = varargin{1};
+        u_low = varargin{2};
+        W = DualTree2d_SplitHighLowComplex(x, J, FS_filter1d, fb1d, u_hi, u_low);
     otherwise
         error('Unknown Transform type!');
 end
@@ -73,6 +77,8 @@ switch Transform
         y = iDualTree2d_SplitHigh(W, J, FS_filter1d, fb1d, u_hi);
     case('DT_SplitHighLow')
         y = iDualTree2d_SplitHighLow(W, J, FS_filter1d, fb1d, u_hi, u_low);
+    case('DT_SplitHighLowComplex')
+        y = iDualTree2d_SplitHighLowComplex(W, J, FS_filter1d, fb1d, u_hi, u_low);
     otherwise
         error('Unknown Transform type!');
 end

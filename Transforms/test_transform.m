@@ -1,8 +1,11 @@
 %% Set Home Path and Add to Path
-% HOME_PATH = 'E:\Dropbox\Research\DirMuRS_Simple\';
-% HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
-% addpath(genpath(HOME_PATH));
-% cd E:\Dropbox\Research\DirMuRS_Simple\;
+clear;
+% HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
+HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
+OLD_CODE = [HOME_PATH 'old_code'];
+path(pathdef);
+addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
+
 
 %%
 
@@ -61,18 +64,20 @@ x = rand(512);
 % load filters
 
 % To split lowpass
-[u1, u2] = SplitLowOrig;
-u_low = [u1, u2];
+% [u1, u2] = SplitLowOrig;
+% u_low = [u1, u2];
+% u_low = u_low.freqshift(pi/4);
 
 % To split highpass
-[u1, u2] = SplitHaar;
-u_hi = [u1, u2];
+% [u1, u2] = SplitHaar;
+% u_hi = [u1, u2];
+% u_hi = u_hi.freqshift(pi/3);
 
-[FS_filter1d,FilterBank1d] = DualTree_FilterBank_Selesnick;
+% [FS_fb, fb] = DualTree_FilterBank_Zhao;
 
 % tmp_fb = FilterBank1d{1};
-w = DualTree2d_new(x, 2, FS_filter1d, FilterBank1d);
-y = iDualTree2d_new(w, 2, FS_filter1d, FilterBank1d);
+% w = DualTree2d_SplitHighLowComplex(x, 2, FS_fb, fb, u_hi, u_low);
+% y = iDualTree2d_SplitHighLowComplex(w, 2, FS_fb, fb, u_hi, u_low);
 
 
 % w = Framelet2d_new(x, 1, FilterBank1d{1}, FilterBank1d{1});
@@ -81,7 +86,7 @@ y = iDualTree2d_new(w, 2, FS_filter1d, FilterBank1d);
 % w = Framelet1d_new(x, 3, tmp_fb);
 % y = iFramelet1d_new(w, 3, tmp_fb);
 
-err = max(max(abs(x-y)))
+% err = max(max(abs(x-y)))
 
 % m = 2; n = 2;
 % [L, H] = d2tanalysis(x, 2, FS_filter1d{m}, FS_filter1d{n});

@@ -8,6 +8,8 @@ lo_filter = [-1, 1, 4+sqrt(15), 4+sqrt(15), 1, -1, 4-sqrt(15), 4-sqrt(15)]/16;
 lo_start_pt = -3;
 lo = filter1d(lo_filter, lo_start_pt, 'low');
 
+hi = filter1d;
+
 %% Original
 hi = CQF(lo);
 

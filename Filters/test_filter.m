@@ -1,7 +1,10 @@
 %% Set Home Path and Add to Path
+clear;
 % HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
-% HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
-% addpath(genpath(HOME_PATH));
+HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
+OLD_CODE = [HOME_PATH 'old_code'];
+path(pathdef);
+addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
 
 %%
 clear;
@@ -64,19 +67,105 @@ clear;
 
 %%
 
-x{1} = 1:8;
+% t2=-2;
+% t1=2.1;
+% 
+% P = [-t2, -t1, t1+t2-1, 0, 1];
+% pp = [t2, t1+t2, 1, 1];
+% 
+% az = FejerRieszReal(pp);
+% az = az.convfilter(filter1d([0.5, 0.5], 0));
+% 
+% a2 = az.convfilter(az.conjflip);
+% 
+% xi = -pi:0.001:pi;
+% x = sin(xi/2).^2;
+% 
+% Q = [t2, -2*t2 - t1, 1];
+% uz = FejerRieszReal(Q);
+% uz = uz.freqshift(pi);
+% uz = Real(uz);
+% uz = uz.convfilter(filter1d([-1/4, 1/2, -1/4], -1));
+% 
+% u2 = uz.convfilter(uz.conjflip);
+% yu = u2.FreqResponse(xi);
+% 
+% 
+% y1 = polyval(P, x);
+% 
+% plot(xi, abs(1-y1-yu))
+% xlim([-pi, pi]); grid on
+% y2 = a2.FreqResponse(xi);
+% 
+% err = abs(y1-y2);
+% 
+% plot(xi, y1, 'r*', xi, abs(y2), 'g-', xi, err, 'bo')
 
-f = filter1d;
-f.filter = [2,3,6,5];
+% bz = FejerRieszReal(P);
+% 
+% e = az + (-1).*bz;
+% 
+% a2 = az.convfilter(az.conjflip);
+% af = a2.convert_ffilter(1024);
+% af.plot_ffilter
 
-y1 = f.synthesis(x,2,2);
-y2 = upfirdn
+%%
+
+t1 = -2;
+t2 = 2.5;
+
+[az, uz] = InitialLowpass(t1, t2);
+
+c1 = sqrt(2)/2; d1 = sqrt(2)/2;
+% c1 = 0; d1 = 0;
+[b1, b2] = InitialHighpass(uz, c1, d1);
+
+I = sqrt(-1);
+
+bp = b1 + I.* b2;
+
+% b2 = bp.convfilter(bp.conjflip);
+
+% xi = -pi:0.01:pi;
+% y = b2.FreqResponse(xi);
+% plot(xi, abs(y))
+% xlim([-pi, pi]); grid on
+
+%%
+[FS_fb, fb] = DualTree_FilterBank_Zhao;
+
+FS_fb{1}(1) = az;
+FS_fb{1}(2) = sqrt(2).* b1;
+
+FS_fb{2}(1) = az;
+FS_fb{2}(1).start_pt = az.start_pt+1;
+FS_fb{2}(2) = sqrt(2).* b2;
+
+x = rand(512);
+w = DualTree2d(x, 4, FS_fb, fb);
+y = iDualTree2d(w, 4, FS_fb, fb);
+
+err = max(max(abs(x-y)))
+
+% bp.fplot
 
 
+% fbtest(4) = sqrt(2).* b1;
+% fbtest(3) = sqrt(2).* b2;
+% fbtest(2) = FS_fb{2}(1);
+% fbtest(1) = FS_fb{1}(1);
 
+% fbtest(4) = FS_fb{2}(2);
+% fbtest(3) = FS_fb{1}(2);
+% fbtest(2) = FS_fb{2}(1);
+% fbtest(1) = FS_fb{1}(1);
 
-
-
+% fbtest = 1/sqrt(2) .* fbtest;
+% 
+% w = Framelet2d(x, 2, fbtest);
+% y = iFramelet2d(w, 2, fbtest);
+% 
+% err = max(max(abs(x-y)))
 
 
 

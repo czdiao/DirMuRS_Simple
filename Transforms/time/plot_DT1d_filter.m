@@ -1,7 +1,7 @@
 %% Add Path
 clear;
-% HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
-HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
+HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
+% HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
 OLD_CODE = [HOME_PATH 'old_code'];
 path(pathdef);
 addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
@@ -17,6 +17,7 @@ u_low = [u1, u2];
 
 [u1, u2] = SplitHaar;
 u_hi = [u1, u2];
+% u_hi = Daubechies8_1d;
 
 nLevel = 2;  % level of DAS to plot output
 %% Compute Filters
@@ -83,5 +84,33 @@ plot_ffilter(DAS_Freq);
 
 % legend('a_1^p','b_1^p', 'a_2^p', 'b_2^p','a_3^p', 'b_3^p','a_4^p', 'b_4^p');
 % title('Dual Tree DAS, same L2 norm in different scale');
+
+% figure;
+% hif = u_hi.convert_ffilter(1024);
+% plot_ffilter(hif)
+
+% figure;
+% hi(1) = u_hi(1).upsamplefilter(2^nLevel);
+% hi(2) = u_hi(2).upsamplefilter(2^nLevel);
+% 
+% hif = hi.convert_ffilter(1024);
+% plot_ffilter(hif)
+
+
+% FB_real = Daubechies8_1d;
+% FB_imag = FB_real;
+% FB_imag(1).start_pt = FB_imag(1).start_pt + 1;
+% FB_imag(2) = FB_imag(1).CQF;
+% 
+% I = sqrt(-1);
+% DAS_Complex(1) = FB_real(1) + I.*FB_imag(1);
+% DAS_Complex(2) = FB_real(2) + I.*FB_imag(2);
+% 
+% DAS_Freq = DAS_Complex.convert_ffilter(1024);
+% plot_ffilter(DAS_Freq);
+
+
+
+
 
 
