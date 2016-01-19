@@ -1,4 +1,4 @@
-function [ y ] = DenoiseLocalSoft( x, J, Nsig, filter, nor, x_true )
+function [ y ] = DenoiseLocalSoft( x, J, Nsig, filter, nor, x_true , opt)
 %Denoise Using Framelet Transform and Local Soft Shrinkage Method
 %
 % Using old method to input precalculated filter norms.
@@ -22,7 +22,7 @@ W_true = normcoef(W_true,J,nor);
 
 
 
-W = localsoft_test(W, W_true, Nsig, 'local_soft_m6');
+W = localsoft_test(W, W_true, Nsig, opt);
 
 
 W = unnormcoef(W,J,nor);

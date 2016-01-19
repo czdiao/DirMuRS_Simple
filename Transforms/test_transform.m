@@ -10,7 +10,7 @@ addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
 %%
 
 clear;
-x = rand(512);
+% x = rand(512);
 % imgName    = '1.2.08.tiff';
 % x = double(imread(imgName));
 % x(511,:) = x(510,:);
@@ -160,6 +160,53 @@ x = rand(512);
 % y = y(ind,ind);
 % figure;
 % ShowImage(x)
+
+% [FS_filter1d, FilterBank1d] = DualTree_FilterBank_Zhao;
+% 
+% nlevel = 3;
+% [u1, u2] = SplitULen3(-0.2, pi);
+% u_hi = [u1, u2];
+% 
+% [u1, u2] = SplitULen3(0.2, 1);
+% u_low = [u1, u2];
+% 
+% w = DualTree2d_SplitHighLowComplex(x, nlevel, FS_filter1d, FilterBank1d, u_hi, u_low);
+% y = iDualTree2d_SplitHighLowComplex(w, nlevel, FS_filter1d, FilterBank1d, u_hi, u_low);
+% 
+% err = max(max(abs(x-y)))
+
+% x = double(imread('Lena512.png'));
+% [FS_fb, fb] = DualTree_FilterBank_Zhao;
+% w = DualTree2d(x, 5, FS_fb, fb);
+% 
+% wcoeff1 = WaveletData2D(w, 'DualTree');
+% wcoeff2 = 2.*wcoeff1;
+% 
+% 
+% w1 = wcoeff1.coeff;
+% w2 = wcoeff2.coeff;
+% y1 = iDualTree2d(w1, 5, FS_fb, fb);
+% y2 = iDualTree2d(w2, 5, FS_fb, fb);
+
+
+x = double(imread('Lena512.png'));
+fb = Daubechies8_1d;
+
+w = Framelet2d(x, 5, fb);
+
+wcoeff1 = WaveletData2D(w, 'Framelet');
+wcoeff2 = 2.*wcoeff1;
+
+
+w1 = wcoeff1.coeff;
+w2 = wcoeff2.coeff;
+y1 = iFramelet2d(w1, 5, fb);
+y2 = iFramelet2d(w2, 5, fb);
+
+
+n1 = sqrt(sum(sum(x.^2)))
+
+n2 = wcoeff1.norm(2)
 
 
 

@@ -131,6 +131,8 @@ for scale  = 1:n_Lvl-1
                 ratio = (0.102*betahat-0.121).*(Ssig_true./Nsig).^2 + (-0.872*betahat+1.036).*Ssig_true./Nsig+(0.48*betahat+0.33);
                 Ssig = Ssig_true./ratio;
                 
+            case('local_iterative') % iterative thresholding
+                Ssig = sqrt(Wsig);
                 
             otherwise
                 error('No such case!\n');

@@ -6,6 +6,8 @@ function variance = cal_variance(w)
 %   variance is a col vector. Containing all the local variances from all
 %   levels and all bands.
 %
+%   Note:   This function is for statistical use.
+%
 %   Chenzhe Diao
 %   Aug, 2015.
 

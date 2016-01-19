@@ -1,7 +1,7 @@
 %% Plot DAS in Time Domain
 clear;
 
-nlevel = 2;     % level of decomposition
+nlevel = 4;     % level of decomposition
 L = 8*2^nlevel; % size of image
 
 x = zeros(L,L);
@@ -44,11 +44,11 @@ u_hi = [u1, u2];
 
 
 %% Transform
-% w = DualTree2d_SplitHighLowComplex(x, nlevel, FS_filter1d, FilterBank1d, u_hi, u_low);
-w = DualTree2d(x, nlevel, FS_filter1d, FilterBank1d);
+w = DualTree2d_SplitHighLowComplex(x, nlevel, FS_filter1d, FilterBank1d, u_hi, u_low);
+% w = DualTree2d(x, nlevel, FS_filter1d, FilterBank1d);
 
 
-J = 1;  % level to plot DAS
+J = 2;  % level to plot DAS
 N = L/2^J;  % center position
 
 
@@ -63,8 +63,8 @@ for iband = 1:nband
         % Imaginary
         d1 = mod(d2,2)+1;
         w{J}{d1}{d2}{iband}(N/2, N/2) = 1;
-%         y1 = iDualTree2d_SplitHighLowComplex(w,nlevel, FS_filter1d, FilterBank1d, u_hi, u_low);
-        y1 = iDualTree2d(w,nlevel, FS_filter1d, FilterBank1d);
+        y1 = iDualTree2d_SplitHighLowComplex(w,nlevel, FS_filter1d, FilterBank1d, u_hi, u_low);
+%         y1 = iDualTree2d(w,nlevel, FS_filter1d, FilterBank1d);
 
         w{J}{d1}{d2}{iband}(N/2, N/2) = 0;
 %         subplot_tight(4,4,pos(iband));

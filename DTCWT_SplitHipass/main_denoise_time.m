@@ -20,19 +20,19 @@ addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
 
 
 %% Input: Choose Picture (in HOME_PATH/Pics/)
-imgName    = 'Lena512.png';
+imgName    = 'Barbara512.png';
 % imgName    = '1.5.07.tiff';
 
 s = double(imread(imgName));
 
 
 %% Input: Choose Transform
-Transform = 'DT';
+% Transform = 'DT';
 % Transform = 'DT_SplitHigh';
-% Transform = 'DT_SplitHighLow';
+Transform = 'DT_SplitHighLow';
 % Transform = 'DT_SplitHighLowComplex';
 
-nlevel = 4;
+nlevel = 5;
 
 fprintf('Denoising using Transform: %s, for %d levels...\n', Transform, nlevel);
 
@@ -89,6 +89,7 @@ for i = 1:len   % choose noise levels
     y = denoise_BiShrink(x, nlevel, sigma, FS_filter1d, fb1d, nor, Transform, u_hi, u_low);
     
     %     y = denoise_BLSGSM(x,5, sigma, FS_filter2d, filter2d);
+    y = y.*(y>=0);
 
     
     % Calculate the PSNR value

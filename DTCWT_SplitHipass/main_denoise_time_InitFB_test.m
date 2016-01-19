@@ -56,8 +56,8 @@ for t1 = -2*t2-2:0.2:-2*t2 + 2*sqrt(t2)
 
 tmp_list = ones(cdrow, 3)*inf;      % c1, d1, PSNR_val
 cdcount = 1;
-for c1 = -0.5:0.1:0.5;
-for d1 = -sqrt(1-c1^2):0.1:sqrt(1-c1^2);
+for c1 = -0.5:0.1:0.5
+for d1 = -sqrt(1-c1^2):0.1:sqrt(1-c1^2)
 
 [az, uz] = InitialLowpass(t1, t2);
 [b1, b2] = InitialHighpass(uz, c1, d1);
@@ -151,14 +151,14 @@ save('Best_Table2.mat');
 
 %%
 
-% count = 0;
-% for t2 = 2.9:0.1:3
+count = 0;
+% for t2 = 2.0:0.1:3
 %     for t1 = -2*t2-2:0.1:-2*t2 + 2*sqrt(t2)
-% %         for c1 = -0.5:0.1:0.5;
-% %             for d1 = -sqrt(1-c1^2):0.1:sqrt(1-c1^2);
-%                 count = count+1;
-% %             end
-% %         end
+        for c1 = -1:0.1:1;
+            for d1 = -sqrt(1-c1^2):0.1:sqrt(1-c1^2);
+                count = count+1;
+            end
+        end
 %     end
 % end
 

@@ -22,21 +22,45 @@ nlevel = 5; %5
 
 PSNR_val = zeros(len, 1);
 %% Denoising
-for i = 1:len
+% for i = 1:len
+%     n = noise512{i};
+%     s = x + n;
+% 
+%     y = DenoiseLocalSoft(s, nlevel, sigmaN(i), filter, nor,x);
+% %     y = DenoiseBishrink(s, nlevel, sigmaN(i), filter, nor);
+%     
+%     
+%     % Calculate the PSNR value
+%     PSNR_val(i) = PSNR(x, y);
+%     fprintf('    %g', PSNR_val(i));
+% 
+%     
+% end
+% fprintf('\n');
+
+
+for i = 6
     n = noise512{i};
     s = x + n;
-
-    y = DenoiseLocalSoft(s, nlevel, sigmaN(i), filter, nor,x);
-%     y = DenoiseBishrink(s, nlevel, sigmaN(i), filter, nor);
     
-    
-    % Calculate the PSNR value
-    PSNR_val(i) = PSNR(x, y);
-    fprintf('    %g', PSNR_val(i));
-
+%     y = s;
+    for ii = 1:5
+        if ii==1
+            y = DenoiseLocalSoft(s, nlevel, sigmaN(i), filter, nor,x, 'local_soft');
+        else
+            y = DenoiseLocalSoft(s, nlevel, sigmaN(i), filter, nor, y, 'local_true');
+        end
+        % Calculate the PSNR value
+        PSNR_val = PSNR(x, y);
+        fprintf('iter = %d,  PSNR = %g\n', ii, PSNR_val);
+        
+    end
     
 end
 fprintf('\n');
+
+
+
 
 
 
