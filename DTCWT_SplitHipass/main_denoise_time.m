@@ -29,8 +29,8 @@ s = double(imread(imgName));
 %% Input: Choose Transform
 % Transform = 'DT';
 % Transform = 'DT_SplitHigh';
-Transform = 'DT_SplitHighLow';
-% Transform = 'DT_SplitHighLowComplex';
+% Transform = 'DT_SplitHighLow';
+Transform = 'DT_SplitHighLowComplex';
 
 nlevel = 5;
 

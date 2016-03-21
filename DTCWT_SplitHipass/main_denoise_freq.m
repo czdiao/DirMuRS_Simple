@@ -20,8 +20,8 @@ clear;
 %% Input: Choose Picture (in HOME_PATH/Pics/)
 % imgName    = '1.2.08.tiff';
 % imgName    = 'Pressed calf leather.tiff';
-imgName    = '1.1.03.tiff';
-% imgName    = 'Lena512.png';
+% imgName    = '1.1.03.tiff';
+imgName    = 'Barbara512.png';
 
 s = double(imread(imgName));
 % s(511,:) = s(510,:);

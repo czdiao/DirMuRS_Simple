@@ -1,10 +1,10 @@
 %% Set Home Path and Add to Path
-clear;
+% clear;
 % HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
-HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
-OLD_CODE = [HOME_PATH 'old_code'];
-path(pathdef);
-addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
+% HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
+% OLD_CODE = [HOME_PATH 'old_code'];
+% path(pathdef);
+% addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
 
 
 %%
@@ -189,29 +189,72 @@ clear;
 % y2 = iDualTree2d(w2, 5, FS_fb, fb);
 
 
-x = double(imread('Lena512.png'));
-fb = Daubechies8_1d;
+% x = double(imread('Lena512.png'));
+% fb = Daubechies8_1d;
+% 
+% w = Framelet2d(x, 5, fb);
+% 
+% wcoeff1 = WaveletData2D(w, 'Framelet');
+% wcoeff2 = 2.*wcoeff1;
+% 
+% 
+% w1 = wcoeff1.coeff;
+% w2 = wcoeff2.coeff;
+% y1 = iFramelet2d(w1, 5, fb);
+% y2 = iFramelet2d(w2, 5, fb);
+% 
+% 
+% n1 = sqrt(sum(sum(x.^2)))
+% 
+% n2 = wcoeff1.norm(2)
 
-w = Framelet2d(x, 5, fb);
+%%
 
-wcoeff1 = WaveletData2D(w, 'Framelet');
-wcoeff2 = 2.*wcoeff1;
-
-
-w1 = wcoeff1.coeff;
-w2 = wcoeff2.coeff;
-y1 = iFramelet2d(w1, 5, fb);
-y2 = iFramelet2d(w2, 5, fb);
-
-
-n1 = sqrt(sum(sum(x.^2)))
-
-n2 = wcoeff1.norm(2)
-
+% imgName    = 'Barbara512.png';
+% % imgName    = '1.5.07.tiff';
+% % s = double(imread(imgName));
+% s = randn(512);
+% 
+% 
+% % [FS_filter1d, fb1d] = DualTree_FilterBank_Zhao;
+% % [FS_filter1d, fb1d] = DualTree_FilterBank_test;
+% % [FS_filter1d, fb1d] = DualTree_FilterBank;
+% % [FS_filter1d, fb1d] = DualTree_FilterBank_freq(1024);
+% FS_filter1d = DualTree_GenFSFB_freq(1024,pi/2, 189/256);
+% fb1d = DualTree_GenFB_freq(1024, pi/2, 189/256);
 
 
+%% Split
+% % To split lowpass
+% [u1, u2] = SplitLowOrig;
+% u_low = [u1, u2];
+% 
+% % To split highpass
+% [u1, u2] = SplitHaar;
+% u_hi = [u1, u2];
+% % I = sqrt(-1);
+% % u_hi = I.*u_hi;
+% % u_hi = Daubechies8_1d;
 
 
+%%
+
+% % DT = DualTreeWavelet2D(FS_filter1d, fb1d);
+% % DT = DualTreeSplitHighLow2D(FS_filter1d, fb1d, u_hi, u_low);
+% DT = fDualTree2D(FS_filter1d, fb1d);
+% 
+% % DT.level_norm = 3;
+% % DT.nor = DT.CalFilterNorm();
+% 
+% DT.nlevel = 3;
+% for tmp = 1:10
+% DT.coeff = DT.decomposition(s);
+% y = DT.reconstruction();
+% end
+% 
+% err = max(max(abs(s-y)))
+
+% DT.plot_DAS_freq(1)
 
 
 

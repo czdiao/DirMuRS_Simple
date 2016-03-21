@@ -1,6 +1,12 @@
 function [ wf ] = wfft2_dt( wt )
-%WFFT2_DT Summary of this function goes here
-%   Detailed explanation goes here
+%WFFT2_DT Perform fft2 to all the dual tree CWT coefficients.
+%
+%The output is still in the same data structure as wt
+%
+%   Chenzhe
+%   Feb, 2016
+%
+
 
 J = length(wt)-1;
 

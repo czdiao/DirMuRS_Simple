@@ -48,7 +48,7 @@ end
 
 
 for i = 1:2*nband
-    surf(4*y_all{i}); axis image;
+    surf(4*y_all{i}); axis tight;
     hold on;
 end
 

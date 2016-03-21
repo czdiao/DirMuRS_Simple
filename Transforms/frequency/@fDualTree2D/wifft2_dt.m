@@ -1,6 +1,12 @@
 function [ wt ] = wifft2_dt( wf )
-%WIFFT2_DT Summary of this function goes here
-%   Detailed explanation goes here
+%WIFFT2_DT Perform ifft2 to all the dual tree CWT coefficients.
+%
+%The original data in time domain is supposed to be all real. So we just
+%discard the imaginary part.
+%
+%   Chenzhe
+%   Feb, 2016
+%
 
 J = length(wf)-1;
 

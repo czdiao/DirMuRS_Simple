@@ -111,7 +111,7 @@ classdef filter1d
         label = '';     % label of the filter, char array. 'low', 'high', etc.
     end
     
-    methods
+    methods  % Constructor
         function f1d = filter1d(vec, pt, label)  % constructor
             if nargin == 2
                 label = '';
@@ -125,42 +125,23 @@ classdef filter1d
             f1d.label = label;
         end
         
-        function highpass = CQF(lowpass)
-            %%CQF alternating shift for constructing highpass
-            % Generate the 1D highpass filter from lowpass filter in CQF pairs
-            % $b_n = (-1)^(n+1) a_{1-n}$
-            len = length(lowpass.filter);
-            highpass = filter1d;
-            highpass.filter = conj(lowpass.filter(end:-1:1));
-            highpass.start_pt = 1 - (lowpass.start_pt + len - 1);
-            
-            flip = ones(1,len);
-            if mod(highpass.start_pt, 2)==1
-                s = 2;
-            else
-                s = 1;
+        % filter set method, to ensure filter is a row vector
+        function obj = set.filter(obj, val)
+            if (~isvector(val)) && (~isempty(val))
+                error('filter1d should take 1d filter!');
+            elseif iscolumn(val)
+                val = val.';    % transpose without complex conjugation
             end
-            
-            for i = s:2:len
-                flip(i) = -1;
-            end
-            
-            highpass.filter = highpass.filter.*flip;
-            highpass.label = 'high';
+            obj.filter = val;
         end
+    end
+    
+    methods
+        highpass = CQF(lowpass)
         
-        function f1d_flip = conjflip(f1d)   
-            %%Conjugate flip of the filter
-            % a_new(n) = conj(a(-n))
-            len = length(f1d.filter);
-            flip_start_pt = (f1d.start_pt + len - 1) * (-1);
-            
-            f1d_flip = filter1d;
-            f1d_flip.filter = conj(f1d.filter(end:-1:1));
-            f1d_flip.start_pt = flip_start_pt;
-            f1d_flip.label = f1d.label;
-
-        end
+        f1d_flip = conjflip(f1d)
+        
+        ff1d = convert_ffilter(tfilters, N)     
         
         function f = convfilter(u, v)         
             %%1d filter convolution
@@ -168,23 +149,6 @@ classdef filter1d
             pt = u.start_pt + v.start_pt;
             f = filter1d(vec, pt);
             
-        end
-        
-        function ff1d = convert_ffilter(tfilters, N)     
-            %%Convert time domain filter filter1d objects to frequency domain filter freqfilter1d
-            len = length(tfilters);
-            ff1d(len) = freqfilter1d;
-            for i = 1:len
-                if nargin >=2
-                    num_zeros = N-length(tfilters(i).filter);
-                else
-                    num_zeros = 0;
-                end
-                ff = [tfilters(i).filter, zeros(1,num_zeros)];
-                ff = circshift2d(ff, 0, tfilters(i).start_pt);
-                ff = fft(ff);
-                ff1d(i).ffilter = ff;
-            end
         end
         
         function fb1d_new = checkfilter(fb1d, rate)

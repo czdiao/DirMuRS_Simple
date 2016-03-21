@@ -39,6 +39,6 @@ for i = 1:NFfilter
     end
 end
 
-x = x*sqrt(2);
+x = x*sqrt(rate);
 
 end % fsynthesis

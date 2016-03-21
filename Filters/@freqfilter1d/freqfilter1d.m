@@ -51,9 +51,10 @@ classdef freqfilter1d
     
     properties
         ffilter = []; % row vector, frequency based filter.
+        index;
     end
     
-    methods
+    methods     % Constructor and Property Set method
         function f = freqfilter1d(func, N)
             %%Constructor using function handle.
             % Input:
@@ -70,57 +71,36 @@ classdef freqfilter1d
             end
         end %freqfilter1d
         
-        function fhi = fCQF(flow)
-            %Generate highpass from lowpass by CQF pairs in Freq domain.
-            
-            len = length(flow.ffilter);
-            if mod(len, 2)~=0
-                error('Cannot Generate Highpass filter from lowpass!');
+        % ffilter set method, to ensure ffilter is a row vector
+        function obj = set.ffilter(obj, val)
+            if ~isvector(val)
+                error('freqfilter1d should take 1d filter!');
+            elseif iscolumn(val)
+                val = val.';    % transpose without complex conjugation
             end
-            
-            I = sqrt(-1);
-            theta = 0:1/len:(len-1)/len;
-            theta = -theta*2*pi*I;
-            
-            c = exp(theta);
-            f = conj(fftshift(flow.ffilter));
-            fhi = freqfilter1d;
-            fhi.ffilter = c.*f;
-            
+            obj.ffilter = val;
         end
-        
-        function f2 = filterdownsample(ffilter_old, rate)
-            %Downsample the Frequency based filter.
-            % rate is the downsampling rate.
-            len = length(ffilter_old.ffilter);
-            if mod(len, rate)~=0
-                error('Wrong Sampling Rate for Frequency Filters!');
-            end
-            f2 = freqfilter1d;
-            f2.ffilter = ffilter_old.ffilter(1:rate:end);
-%             f2.ffilter = downsample(ffilter_old.ffilter, rate);
-        end % filterdownsample
-        
-        function plot_ffilter(obj, varargin)
-            % Plot filter in frequency domain. Plot \xi in [-pi, pi].
-            Nfilters = length(obj);
-            for i = 1:Nfilters
-                len = length(obj(i).ffilter);
-                dx = 2*pi/len;
-                if mod(len, 2)==0
-                    x = linspace(-pi,pi-dx,len);
-                else
-                    x = linspace(-pi+dx/2,pi-dx/2, len);
-                end
-                
-                y = fftshift(abs(obj(i).ffilter));
-%                 figure;
-                plot(x, y, varargin{:}); xlim([-pi,pi]); hold on;
-                set(gca,'XTick',linspace(-pi,pi,5)); grid on;
-            end
-        end %plot_ffilter
+    end
+    
+    methods
+        obj_new = add(obj1, obj2)
+        fhi = fCQF(flow)
+        f2 = filterdownsample(ffilter_old, rate)
 
-    end %methods
+        w = fconv(Ffilter, fdata, dim)
+        w = fanalysis(Ffilter, fdata, rate, dim)
+        x = fsynthesis(FfilterBank, fdatacells, rate, dim)
+        
+        plot_ffilter(obj, varargin)
+        tfilters = convert_tfilter(ffilters)
+        
+        % Find the conjugate of the (time domain) complex filter
+        ffilter2 = conj_ffilter(ffilter1)
+        
+        checkPR(ffb, rate)    % Check the PR condition for filter bank
+        
+        
+    end
     
 end
 

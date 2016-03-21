@@ -9,10 +9,14 @@ imagesc(x);
 colormap(gray);
 axis image
 
+colorbar
+
 % [M, N] = size(x);
 % set(gca,'XTick',1:16:N);
 % set(gca,'YTick',1:16:M);
 % grid on
+
+impixelinfo;
 
 end
 

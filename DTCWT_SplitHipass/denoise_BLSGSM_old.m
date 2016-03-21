@@ -1,4 +1,4 @@
-function y = denoise_BLSGSM( x,J, sigmaN, FS_filter2d, filter2d )
+function y = denoise_BLSGSM_old( x,J, sigmaN, FS_filter2d, filter2d )
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 
