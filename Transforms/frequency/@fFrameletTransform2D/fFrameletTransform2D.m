@@ -76,11 +76,13 @@ classdef fFrameletTransform2D < WaveletData2D
         wt = wifft2(wf);
     end
     
-    %% The following methods are still not implemented yet
+    
     methods  % simple arithmetic of coefficients
         obj_new = plus(obj1, obj2)
         obj2 = times(C, obj1)
         obj_new = minus(obj1, obj2)
+        
+        %The following methods are still not implemented yet
         v = convert2array(obj)
         n = norm(obj, p)
     end

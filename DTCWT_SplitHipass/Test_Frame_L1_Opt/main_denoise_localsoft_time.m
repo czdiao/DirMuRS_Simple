@@ -13,14 +13,14 @@ clear;
 
 %% Set Home Path and Add to Path
 % HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
-HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
-OLD_CODE = [HOME_PATH 'old_code'];
-path(pathdef);
-addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
+% HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
+% OLD_CODE = [HOME_PATH 'old_code'];
+% path(pathdef);
+% addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
 
 
 %% Input: Choose Picture (in HOME_PATH/Pics/)
-imgName    = 'Barbara512.png';
+imgName    = 'Lena512.png';
 % imgName    = '1.5.07.tiff';
 
 s = double(imread(imgName));
@@ -75,7 +75,7 @@ disp('PSNR = ');
 
 tic;
 count = 0;
-for i = len   % choose noise levels
+for i = 2   % choose noise levels
     
     sigma = sigmaN(i);
     
@@ -84,7 +84,7 @@ for i = len   % choose noise levels
     
     x = s + n;
     
-    y = framelet_localsoft(x, s, nlevel, sigma, FS_filter1d, fb1d, nor, Transform, 'iter_SplitBregman_magnitude', u_hi, u_low);
+    y = framelet_localsoft(x, s, nlevel, sigma, FS_filter1d, fb1d, nor, Transform, 'iter_SplitBregman', u_hi, u_low);
     
     y = max(y, 0);
     y = min(y, 255);

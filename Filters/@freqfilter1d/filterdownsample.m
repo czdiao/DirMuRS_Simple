@@ -12,6 +12,13 @@ function f2 = filterdownsample(ffilter_old, rate)
 %   Chenzhe
 %   July, 2015
 %
+%   Note:
+%       This corresponds to downsample of the frequency domain sequence. It
+%       is different from the downsample in time domain.
+%
+%   Chenzhe
+%   Mar, 2016
+%
 
 len = length(ffilter_old.ffilter);
 if mod(len, rate)~=0

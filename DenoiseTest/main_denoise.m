@@ -16,7 +16,7 @@
 clear;
 
 %% Input: Choose Picture (in HOME_PATH/Pics/)
-imgName    = 'Boat.png';
+imgName    = 'fingerprint.png';
 % imgName    = '1.5.07.tiff';
 
 
@@ -30,10 +30,15 @@ s = double(imread(imgName));
 % [FS_filter1d, fb1d] = DualTree_FilterBank_test;
 % [FS_filter1d, fb1d] = DualTree_FilterBank;
 
-% fb2d = CTF6_FilterBank_freq2D(1024);
+
 % fb = CTF3_FilterBank_freq(1024);
+% fb = CTF6_FilterBank_freq(1024);
+% fb(1) = add(fb(1), fb(2));
+% fb(2) = [];
+
+fb2d = CTF6_FilterBank_freq2D(1024);
 % fb2d = CTFAdaptiveTest_FilterBank_freq2D(1024);
-fb2d = CTF13AdaptiveTest_FilterBank_freq2D(1024);
+% fb2d = CTF13AdaptiveTest_FilterBank_freq2D(1024);
 % fb2d(1).rate = 2;
 
 
@@ -60,6 +65,7 @@ nL = 5;     % decomposition levels
 % dtwavelet = DualTreeSplitHighLow2D(FS_filter1d, fb1d, u_hi, u_low);
 dtwavelet = TPCTF2D(fb2d);  % this is for freqfilter2d nonseparable
 % dtwavelet = fFrameletTransform2D(fb);
+% dtwavelet = fFrameletCrossLv2D(fb);
 dtwavelet.level_norm = nL;
 dtwavelet.nlevel = nL;
 dtwavelet.nor = dtwavelet.CalFilterNorm;

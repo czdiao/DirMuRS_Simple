@@ -4,23 +4,30 @@
 %   Chenzhe
 %
 
+clear;
 %% Eg1. TPCTF2D
 % Test fFrameletTransform2D class
 % clear;
-% s = randn(512);
-% fb = CTF3_FilterBank_freq(128);
+s = randn(512);
+fb = CTF6_FilterBank_freq(512);
+fb(1) = add(fb(1), fb(2));
+fb(2) = [];
 % fb = Daubechies8_1d;
 % fb = fb.convert_ffilter(1024);
 % fb = Tree1Filter1d;
 % fb = fb.convert_ffilter(1024);
 
-% WT = fFrameletTransform2D(fb);
-% WT.nlevel = 5;
-% WT.coeff = WT.decomposition(s);
-% 
-% y = WT.reconstruction();
-% err = max(max(abs(y-s)))
-% 
+WT = fFrameletCrossLv2D(fb);
+WT.nlevel = 1;
+WT.coeff = WT.decomposition(s);
+
+y = WT.reconstruction();
+err = max(max(abs(y-s)))
+
+coeff = WT.coeff{1};
+for i = 1:length(coeff);
+    coeff{i} = coeff{i}(:)';
+end
 % WT.level_norm = 5;
 % WT.nor =WT.CalFilterNorm;
 % WT.plotnorm;
@@ -34,7 +41,7 @@
 
 
 %% Section 2 Title
-clear;
+% clear;
 % s = randn(256);
 % fb = CTF3_FilterBank_freq(512);
 % fb = CTF6_FilterBank_freq(1024);
@@ -59,22 +66,22 @@ clear;
 % fb.checkPR
 % fb2d = freqfilter2d(fb, fb);
 % fb2d = CTF6_FilterBank_freq2D(256);
-fb2d = CTFblock_FilterBank_freq2D(512);
+% fb2d = CTFblock_FilterBank_freq2D(512);
 % fb2d = CTFAdaptiveTest_FilterBank_freq2D( 256 );
 % fb2d.plot_ffilter
 % fb2d.checkPR
 
-img = 'Barbara512.png';
-x = double(imread(img));
+% img = 'Barbara512.png';
+% x = double(imread(img));
 % Nsig = 5;
 % rng(0,'v4');
 % n = Nsig*randn(size(x));
 % % x = x + n;
 
-fb2d(2:end) = FFBEnergyCal(fb2d(2:end), x);
-ffbindex = FFBindex(12, 12, fb2d(2:end));
-figure;ShowImage((ffbindex.EnergyMatrix))
-figure;ShowImage(ffbindex.Norm2Matrix);
+% fb2d(2:end) = FFBEnergyCal(fb2d(2:end), x);
+% ffbindex = FFBindex(12, 12, fb2d(2:end));
+% figure;ShowImage((ffbindex.EnergyMatrix))
+% figure;ShowImage(ffbindex.Norm2Matrix);
 
 % Group = FBGroup(ffbindex);
 % fb2d_new = FBCombineGroup(Group, fb2d(2:end));
@@ -98,8 +105,6 @@ figure;ShowImage(ffbindex.Norm2Matrix);
 
 % WT.plot_DAS_freq(2);
 % WT.plot_DAS_time(3);
-
-
 
 
 %% Test for short directional filters, by CTF3
@@ -138,14 +143,51 @@ figure;ShowImage(ffbindex.Norm2Matrix);
 % % xf2 = plot_freq(x+n);
 
 
+%% Test for 3D
 
+% N = 128;
+% nL = 2;
+% fb1d = CTF6_FilterBank_freq(N);
+% lowpass = fb1d(1).add(fb1d(2));
+% % lowpass.plot_ffilter;
+% lownew = lowpass;
+% 
+% for i = 1:nL-1
+%     tmp = lowpass.upsamplefilter(2^i);
+%     lownew.ffilter = tmp.fconv(lownew.ffilter);
+% end
+% 
+% hinew = fb1d(6);
+% hinew = hinew.upsamplefilter(2^nL);
+% d1d = hinew.fconv(lownew.ffilter);
+% ftmp2 = d1d.'* d1d;
+% ftmp1 = d1d;
+% 
+% f3d = zeros(N, N, N);
+% 
+% for i = 1:N
+%     f3d(:,:,i) = ftmp2.*ftmp1(i);
+% end
+% 
+% x = ifftn(f3d);
+% x = fftshift(x);
+% x = x*1e6;
+% xr = real(x);
+% xi = imag(x);
+% 
+% D = xr;
+% D(abs(D)<0.1)=NaN;
+% h = slice(D, [], [], 1:size(D,3));
+% set(h, 'EdgeColor','none', 'FaceColor','interp')
+% alpha(0.2)
+% colormap(jet)
 
-
-
-
-
-
-
+% figure
+% colormap(jet)
+% contourslice(xr,[],[],1:16:N,8);
+% % contourslice(tmp, [],[],1);
+% view(3);
+% axis tight
 
 
 

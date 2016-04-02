@@ -26,15 +26,16 @@ figure
 colormap(jet)
 
 for iscale = scale:scale
-    N = L/2^iscale;  % center position
+%     N = L/2^iscale;  % center position
     nB = length(w{iscale});
     
     for iband = 1:nB
         
-        w{iscale}{iband}(N/2, N/2) = 1;
+        [M, N] = size(w{iscale}{iband}); %center position
+        w{iscale}{iband}(M/2, N/2) = 1;
         obj.coeff = w;
         yt = reconstruction(obj);
-        w{iscale}{iband}(N/2, N/2) = 0;
+        w{iscale}{iband}(M/2, N/2) = 0;
         
         yf = fftshift(abs(fft2(yt)));
         

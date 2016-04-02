@@ -85,7 +85,9 @@ classdef freqfilter1d
     methods
         obj_new = add(obj1, obj2)
         fhi = fCQF(flow)
-        f2 = filterdownsample(ffilter_old, rate)
+        f2 = filterdownsample(ffilter_old, rate)  % used to filter shorter signals, this is not time domain downsample
+        
+        f2 = upsamplefilter(ffilter_old, rate);   % corresponds to a time domain upsample
 
         w = fconv(Ffilter, fdata, dim)
         w = fanalysis(Ffilter, fdata, rate, dim)

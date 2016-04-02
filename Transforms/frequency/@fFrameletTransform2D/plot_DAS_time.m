@@ -22,15 +22,16 @@ obj.nlevel = scale;
 w = obj.decomposition(x);
 
 
-N = L/2^scale;  % center position
+% N = L/2^scale;  % center position
 nB = length(w{scale});
 
 for iband = 1:nB
     
-    w{scale}{iband}(N/2, N/2) = 1;
+    [M, N] = size(w{scale}{iband}); % center position
+    w{scale}{iband}(M/2, N/2) = 1;
     obj.coeff = w;
     yt = reconstruction(obj);
-    w{scale}{iband}(N/2, N/2) = 0;
+    w{scale}{iband}(M/2, N/2) = 0;
     
     % We only plot the real parts
     yr = real(yt);

@@ -28,6 +28,7 @@ for dir1 = 1:2
     end
 end
 
+obj2.coeff = w;
 
 end
 
