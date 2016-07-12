@@ -26,7 +26,8 @@ N = L/2^scale;  % center position
 
 nB = obj.nband;
 
-
+figure;
+count = 1;
 for iband = 1:nB
         
     for d2 = 1:2
@@ -38,8 +39,11 @@ for iband = 1:nB
         y1 = reconstruction(obj);
 
         w{scale}{d1}{d2}{iband}(N/2, N/2) = 0;
-%         subplot_tight(4,4,pos(iband));
-        figure;ShowImage(y1);
+%         subplot_tight(4,6,pos(iband));
+subplot_tight(4,6,count);
+ShowImage(y1);
+count = count +1;
+%         figure;ShowImage(y1);
         
         % Real
 %         d1 = d2;

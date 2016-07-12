@@ -52,6 +52,7 @@ classdef freqfilter1d
     properties
         ffilter = []; % row vector, frequency based filter.
         index;
+        label = ''; % lowpass, highpass, etc.
     end
     
     methods     % Constructor and Property Set method

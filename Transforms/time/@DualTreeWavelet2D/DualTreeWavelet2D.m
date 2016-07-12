@@ -45,6 +45,7 @@ classdef DualTreeWavelet2D  <  WaveletData2D
         obj_new = minus(obj1, obj2)
         v = convert2array(obj)
         n = norm(obj, p)    % not implemented yet
+        W = SoftThresh(obj, T)  % not implemented yet
     end
     
     methods    % Transforms, filter norm calculation and normalization
@@ -53,7 +54,7 @@ classdef DualTreeWavelet2D  <  WaveletData2D
         nor = CalFilterNorm(obj)
         W = normcoeff(obj)
         W = unnormcoeff(obj)
-        plotnorm(obj)
+        plotnorm(obj, val)
         plot_DAS_time(obj, scale)
         plot_DAS_freq(obj, scale)
     end
@@ -61,7 +62,11 @@ classdef DualTreeWavelet2D  <  WaveletData2D
     methods    % denoising tools
         trueSig = calSigma(obj)   % Calculate the local std of the wavelet coefficients.
         Sig_est = latentSigma(obj, sigmaN, opt)     % Estimate the latent local std of the wavelet coeff.
+        Sig_est = latentSigma_unnormalize(obj, sigmaN, opt) % unnormalized version, need to be implemented
+        
         W = LocalSoft(obj, Ssig_latent, SigmaN)     % local soft-thresholding
+        W = LocalSoft_unnormalize(obj, Ssig_latent, SigmaN) % unnormalized version, need to be implemented
+        
         W = BiShrink(obj, Ssig_latent, SigmaN)      % bivariate shrinkage
     end
     
@@ -73,7 +78,13 @@ classdef DualTreeWavelet2D  <  WaveletData2D
 
     end
     
-    
+    % this is to perform the same operation on each level and band
+    % not implemented yet
+    methods    % operation on coefficients of each band, only work on hipass bands
+        w_new = operate_band1(obj, fun_handle, w)
+        w_new = operate_band2(obj, fun_handle, w1, w2)
+        
+    end
     
 end
 

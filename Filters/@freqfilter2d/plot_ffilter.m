@@ -1,4 +1,4 @@
-function plot_ffilter(obj)
+function plot_ffilter(obj, N)
 %PLOT_FFILTER Plot 2D frequency based filter in frequency domain. 
 %   Plot \xi in [-pi, pi]^2.
 %
@@ -6,6 +6,13 @@ function plot_ffilter(obj)
 %   Chenzhe
 %   Feb, 2016
 %
+
+if nargin ==2
+    rate1 = size(obj(1).ffilter, 1)/N;
+    rate2 = size(obj(1).ffilter, 2)/N;
+    obj = obj.filterdownsample(rate1, rate2);
+end
+
 
 Nfilters = length(obj);
 

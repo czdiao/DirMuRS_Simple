@@ -28,6 +28,12 @@ f11 = f1.conj_ffilter;
 f21 = f2.conj_ffilter;
 f31 = f3.conj_ffilter;
 
+f1.index = 1;
+f11.index = -1;
+f2.index = 2;
+f21.index = -2;
+f3.index = 3;
+f31.index = -3;
 
 fb1d = [f1, f11, f2, f21, f3, f31];
 

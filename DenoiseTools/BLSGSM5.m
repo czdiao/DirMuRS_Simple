@@ -55,14 +55,15 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % main loop - integrate over logz
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-patches = packVecPatches(coef,block);
+% patches = packVecPatches(coef,block);
+patches = allp;
 Npatches = size(patches,2);
 xhat_sum_p = zeros(1,Npatches);
 norm = zeros(1,Npatches);
 
-fprintf('Denoising (Nz=%g) ',Nz);
+% fprintf('Denoising (Nz=%g) ',Nz);
 for kz = 1:Nz
-    fprintf(' %g',kz);
+%     fprintf(' %g',kz);
     wienerfilt_tmp = wienerfilt{kz};
     xhat_p = wienerfilt_tmp*patches;
     invYcov_tmp = invYcov{kz};
@@ -78,7 +79,7 @@ for kz = 1:Nz
     xhat_sum_p = xhat_sum_p + w.*xhat_p;
     norm = norm + w;
 end
-fprintf('\n');
+% fprintf('\n');
 
 norm(find(norm==0)) = 1;
 xhat = xhat_sum_p./norm;

@@ -16,59 +16,69 @@
 clear;
 
 %% Input: Choose Picture (in HOME_PATH/Pics/)
-imgName    = 'fingerprint.png';
-% imgName    = '1.5.07.tiff';
+imgName    = 'Barbara512.png';
 
 
 s = double(imread(imgName));
 
-%% Input: Set up Transform Details
+%% Old Input: Set up Transform Details
 
-%%load filter banks
-% [FS_filter1d, fb1d] = DualTree_FilterBank_Selesnick;
+% %%load filter banks
+% % [FS_filter1d, fb1d] = DualTree_FilterBank_Selesnick;
 % [FS_filter1d, fb1d] = DualTree_FilterBank_Zhao;
-% [FS_filter1d, fb1d] = DualTree_FilterBank_test;
-% [FS_filter1d, fb1d] = DualTree_FilterBank;
-
-
-% fb = CTF3_FilterBank_freq(1024);
-% fb = CTF6_FilterBank_freq(1024);
-% fb(1) = add(fb(1), fb(2));
-% fb(2) = [];
-
-fb2d = CTF6_FilterBank_freq2D(1024);
-% fb2d = CTFAdaptiveTest_FilterBank_freq2D(1024);
-% fb2d = CTF13AdaptiveTest_FilterBank_freq2D(1024);
-% fb2d(1).rate = 2;
-
-
-% fb2d = CTFblock_FilterBank_freq2D(1024);
-% fb2d(2:end) = FFBEnergyCal(fb2d(2:end), s);
-% ffbindex = FFBindex(12, 12, fb2d(2:end));
-% figure;ShowImage((ffbindex.EnergyMatrix))
-% Group = FBGroup(ffbindex);
-% fb2d_new = FBCombineGroup(Group, fb2d(2:end));
-% fb2d = [fb2d(1), fb2d_new];
-% fprintf('\nFinished Generating Filter Bank!\n');
-
-
-%%To split lowpass
+% % [FS_filter1d, fb1d] = DualTree_FilterBank_test;
+% % [FS_filter1d, fb1d] = DualTree_FilterBank;
+% 
+% 
+% % fb = CTF3_FilterBank_freq(1024);
+% % fb = CTF6_FilterBank_freq(1024);
+% % fb(1) = add(fb(1), fb(2));
+% % fb(2) = [];
+% 
+% % fb2d = CTF6_FilterBank_freq2D(1024);
+% % fb2d = CTFAdaptiveTest_FilterBank_freq2D(1024);
+% % fb2d = CTF13AdaptiveTest_FilterBank_freq2D(1024);
+% % fb2d(1).rate = 2;
+% 
+% 
+% % fb2d = CTFblock_FilterBank_freq2D(1024);
+% % fb2d(2:end) = FFBEnergyCal(fb2d(2:end), s);
+% % ffbindex = FFBindex(12, 12, fb2d(2:end));
+% % figure;ShowImage((ffbindex.EnergyMatrix))
+% % Group = FBGroup(ffbindex);
+% % fb2d_new = FBCombineGroup(Group, fb2d(2:end));
+% % fb2d = [fb2d(1), fb2d_new];
+% % fprintf('\nFinished Generating Filter Bank!\n');
+% 
+% 
+% %%To split lowpass
 % [u1, u2] = SplitLowOrig;
 % u_low = [u1, u2];
-
-%%To split highpass
+% 
+% %%To split highpass
 % [u1, u2] = SplitHaar;
 % u_hi = [u1, u2];
-% u_hi = Daubechies8_1d;
+% % u_hi = Daubechies8_1d;
+% 
+% nL = 5;     % decomposition levels
+% % dtwavelet = DualTreeSplitHighLow2D(FS_filter1d, fb1d, u_hi, u_low);
+% dtwavelet = DualTreeWavelet2D(FS_filter1d, fb1d);
+% % dtwavelet = TPCTF2D(fb2d);  % this is for freqfilter2d nonseparable
+% % dtwavelet = fFrameletTransform2D(fb);
+% % dtwavelet = fFrameletCrossLv2D(fb);
+% dtwavelet.level_norm = nL;
+% dtwavelet.nlevel = nL;
+% dtwavelet.nor = dtwavelet.CalFilterNorm;
 
-nL = 5;     % decomposition levels
-% dtwavelet = DualTreeSplitHighLow2D(FS_filter1d, fb1d, u_hi, u_low);
+
+
+%% Input Type: TPCTF6 filter bank
+fb2d = CTF6_FilterBank_freq2D(544);
+nL = 4;   %4;     % decomposition levels
 dtwavelet = TPCTF2D(fb2d);  % this is for freqfilter2d nonseparable
-% dtwavelet = fFrameletTransform2D(fb);
-% dtwavelet = fFrameletCrossLv2D(fb);
 dtwavelet.level_norm = nL;
 dtwavelet.nlevel = nL;
-dtwavelet.nor = dtwavelet.CalFilterNorm;
+% dtwavelet.nor = dtwavelet.CalFilterNorm;
 
 %% Denoise
 
@@ -87,17 +97,23 @@ disp('PSNR = ');
 
 tic;
 count = 0;
-for i = 1:len   % choose noise levels
+for i = 1   % choose noise levels
     
     Nsig = sigmaN(i);
-    rng(0,'v4');
+%     rng(0,'v4');
+    randn('seed',0);
     n = Nsig*randn(size(s));
     x = s + n;
     
 %     y = denoise_localsoft(x, Nsig, dtwavelet, s);
-    y = denoise_bishrink(x, Nsig, dtwavelet);
-    
+%     y = denoise_bishrink(x, Nsig, dtwavelet);
+%     y = denoise_L1_analysis(x, Nsig, dtwavelet, 'unconstrained', s);
+%     y = denoise_L1_balanced(x, Nsig, dtwavelet, s );
+    y = denoise_GSM(x, Nsig, dtwavelet, 5);        % only works for TPCTF6
+
+    y = real(y);
     y = y.*(y>=0);
+    y(y>255) = 255;
     
     % Calculate the PSNR value
     PSNR_val(i) = PSNR(s,y);

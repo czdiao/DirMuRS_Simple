@@ -11,6 +11,12 @@ Ffilter = freqfilter1d;
 f = 0:1/N:(N-1)/N;
 f = f*2*pi;
 
+if epsL<=eps
+    error('epsL is not positive!');
+elseif epsR<=eps
+    error('epsR is not positive!');
+end
+
 tmp = fchi(f, cL, cR, epsL, epsR);
 if cL-epsL <=0
     tmp1 = fchi(f, cL+2*pi, cR+2*pi, epsL, epsR);

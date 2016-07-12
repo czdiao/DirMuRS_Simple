@@ -14,7 +14,9 @@ function patches = packVecPatches(coefband,block)
 
 child_seg = zeros(block(1)*block(2), M*N);
 boundary  = floor(max(block)/2) + 2;
-child_e   = extendBoundary(coefband,boundary,'method','reflect');
+% child_e   = extendBoundary(coefband,boundary,'method','reflect');
+child_e   = extendBoundary(coefband,boundary,'method','circular');  % Chenzhe
+
 
 k = 1;
 for m = 1:block(1)

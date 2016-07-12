@@ -10,6 +10,7 @@ classdef freqfilter2d
     properties
         ffilter = [];
         rate = 2;   % default is 2, for dyadic wavelets
+        label = '';     % lowpass, highpass, etc.
         
         %tmp properties
         EnergyPortion = 0; % l2 energy in image
@@ -63,9 +64,12 @@ classdef freqfilter2d
         obj_new = minus(obj1, obj2)
         obj_new = add(obj1, obj2)
                 
-        % Downsample and upsample in frequency domain
+        % Downsample and upsample in frequency domain (not changing filter)
         f2 = filterdownsample(ffilter_old, rate1, rate2)
 %         f2 = filterupsample(ffilter_old, rate1, rate2)      % not implemented yet
+
+        % Unsample in time domain
+        f2 = timeupsample(ffilter_old, rate1, rate2);   % need to be tested
 
         % Find the conjugate of the (time domain) complex filter
         ffilter2 = conj_ffilter(ffilter1)
@@ -80,7 +84,7 @@ classdef freqfilter2d
         
         checkPR( ffb, rate )
         
-        % convert to time domain filter
+        
         
     end
     

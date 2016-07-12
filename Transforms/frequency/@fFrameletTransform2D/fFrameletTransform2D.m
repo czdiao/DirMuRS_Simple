@@ -58,16 +58,23 @@ classdef fFrameletTransform2D < WaveletData2D
     methods  % filter norm calculation and normalization
         W = normcoeff(obj)
         W = unnormcoeff(obj)
-        plotnorm(obj)
+        plotnorm(obj, val)
         nor = CalFilterNorm(obj, signal_size)   % the interface changed, no problem?
     end
     
-    % needs to be tested
     methods  % denoising tools
         trueSig = calSigma(obj)     % done
         Sig_est = latentSigma(obj, sigmaN, opt)     % done
+        Sig_est = latentSigma_unnormalize(obj, sigmaN, opt) % unnormalized version, need to be implemented
+        
         W = LocalSoft(obj, Ssig_latent, SigmaN)     % done
+        W = LocalSoft_unnormalize(obj, Ssig_latent, SigmaN) % unnormalized version, need to be implemented
+        W = LocalSoft_modified(obj, Ssig_latent, SigmaN, C)    % modified version of Local Soft
+
         W = BiShrink(obj, Ssig_latent, SigmaN)  % done
+        
+        W = SoftThresh(obj, T)      % Bandwise soft thresholding, lambda*T is the thresh value for each band
+        
     end
     
     
@@ -81,12 +88,17 @@ classdef fFrameletTransform2D < WaveletData2D
         obj_new = plus(obj1, obj2)
         obj2 = times(C, obj1)
         obj_new = minus(obj1, obj2)
-        
+        n = norm(obj, p)    % calculate lp norm of the wavelet coeff
+
         %The following methods are still not implemented yet
         v = convert2array(obj)
-        n = norm(obj, p)
     end
     
-    
+    % this is to perform the same operation on each level and band
+    methods    % operation on coefficients of each band, only work on hipass bands
+        w_new = operate_band1(obj, fun_handle, w)
+        w_new = operate_band2(obj, fun_handle, w1, w2)
+        
+    end
 end
 

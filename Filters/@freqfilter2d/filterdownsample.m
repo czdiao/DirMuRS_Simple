@@ -12,13 +12,16 @@ function f2 = filterdownsample(ffilter_old, rate1, rate2)
 %   Feb, 2016
 % 
 
-[M, N] = size(ffilter_old.ffilter);
-if mod(M, rate1)~=0 || mod(N, rate2)~=0
-    error('Wrong Sampling Rate for Frequency Filters!');
-end
+len = length(ffilter_old);
 f2 = ffilter_old;
-f2.ffilter = ffilter_old.ffilter(1:rate1:end, 1:rate2:end);
 
+for i = 1:len
+    [M, N] = size(ffilter_old(i).ffilter);
+    if mod(M, rate1)~=0 || mod(N, rate2)~=0
+        error('Wrong Sampling Rate for Frequency Filters!');
+    end
+    f2(i).ffilter = ffilter_old(i).ffilter(1:rate1:end, 1:rate2:end);
+end
 
 
 

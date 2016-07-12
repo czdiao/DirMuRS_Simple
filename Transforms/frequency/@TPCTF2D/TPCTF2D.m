@@ -1,33 +1,27 @@
-classdef TPCTF2D < fFrameletTransform2D
+classdef TPCTF2D < fFrameletNonSeparable2D
     %TPCTF2D Implementation of TP-CTF for 2D data.
     %The transform is implemented in frequency domain, in order to have
-    %easier design of filters.
+    %easier design of filters. Filters are nonseparable as freqfilter2d.
     %
-    %   We can use fFrameletTransform2D as interface. The output complex
-    %   coefficients are stored in the same data structure in property:
-    %   coeff.
+    %   The output complex coefficients are stored in the same data 
+    %   structure in property: coeff.
     %
-    %   The extended use of TPCTF2D in addition to fFrameletTransform2D
+    %   The extended use of TPCTF2D in addition to fFrameletNonSeparable2D
     %   are:
     %
-    %   (1) Focus on the complex framelets. Add some code to save and
+    %       Focus on the complex framelets. Add some code to save and
     %       analyse the real coefficients.
-    %       Highpass:
     %           coeff{level}{dir}:              
     %               for complex coefficients
-    %           coeff_real{level}{dir}{part}:   
-    %               for real coefficients, where the part=1 for real, part=2 for imaginary
-    %       Lowpass:
-    %           coeff{nlevel+1} and coeff_real{nlevel+1} are the same thing
-    %   (2) We allow nonseparable filters. So we use freqfilter2d structure
-    %       in the filter banks. Also, the transforms are performed with 2d
-    %       filters directly.
+    %
+    %           coeff_real{1}{ilevel}{iband}:
+    %               collect all real parts of the coefficients. 16 bands for TPCTF6
+    %           coeff_real{2}{ilevel}{iband}:
+    %               imaginary parts of the coefficients. 16 bands for TPCTF6
+    %           coeff_real{3}:
+    %               lowpass output at last level
     %
     %
-    %   Note:
-    %       The structure for coeff (complex coeff) could be the same for
-    %       any framelet transform. We keep this as primary use and stored
-    %       variable. We make coeff_real to be dependent on coeff.
     %
     %
     %   Chenzhe
@@ -35,10 +29,8 @@ classdef TPCTF2D < fFrameletTransform2D
     %
     
     properties
-        % Filter Bank, stored as freqfilter2d filters to allow nonseparable
-        % transforms.
-        FilterBank2D;
         
+        pairmap;    % N by 2 matrix, store indices of pairs of conjugate bands for CTF transform
         coeff_real;
     end
     
@@ -48,22 +40,36 @@ classdef TPCTF2D < fFrameletTransform2D
             if nargin > 0
                 obj.FilterBank2D = fb2d;
                 obj.nband = length(fb2d)-1;
+                obj.pairmap = obj.getpairmap;
             end
         end
     end
     
-    methods % transforms, using 2d filters directly
-        w = decomposition(obj, x)
-        y = reconstruction(obj)
-        coeff_real = RealCoeff(obj)        % not implemented yet
-
-    end
-    
-    methods(Static)
-        [L, H] = d2fanalysis_ctf(fdata, rate, FB_col, FB_row) % bugs, doesn't work
-        [ x ] = d2fsynthesis_ctf( w, rate, Ffb_c, Ffb_r ) % bugs, doesn't work
+    methods 
+        % The decomposition/reconstruction (and undecimated version)
+        % inherited from fFrameletNonSeparable2D class also works for this
+        % class. However, we could make use of the conjugate pair filters
+        % property to make the transform faster. We can build transform
+        % functions later based on pairmap.
+        
+        % For TPCTF, find pairs of conjugate bands from freqfilter2d.index
+        % information
+        pairmap = getpairmap(obj);
+        
+        % For TPCTF transform, separate real/imag coefficients
+        coeff_real = getCoeffReal(obj)
+        coeff = getCoeffComplex(obj)
+        
+        % Generate the frames, for plot use
+        [fr_real, fr_imag] = getFramesReal(obj, N, fker)     % the real/imag part of getFrames, need to be tested
+        
+        % used for GSM, specific for TPCTF class because it works on
+        % real/imaginary parts respectively.
+        [Cwr, Cwi] = CalCovMatrix(obj, N, blocksize, fker)
+        W  = GSMDenoise( obj, blocksize, Cwr, Cwi, sigmaN )
         
     end
+    
     
     
     

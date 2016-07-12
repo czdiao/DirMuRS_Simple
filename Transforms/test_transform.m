@@ -216,7 +216,7 @@ clear;
 % s = randn(512);
 % 
 % 
-% % [FS_filter1d, fb1d] = DualTree_FilterBank_Zhao;
+[FS_filter1d, fb1d] = DualTree_FilterBank_Zhao;
 % % [FS_filter1d, fb1d] = DualTree_FilterBank_test;
 % % [FS_filter1d, fb1d] = DualTree_FilterBank;
 % % [FS_filter1d, fb1d] = DualTree_FilterBank_freq(1024);
@@ -225,16 +225,16 @@ clear;
 
 
 %% Split
-% % To split lowpass
+% To split lowpass
 % [u1, u2] = SplitLowOrig;
 % u_low = [u1, u2];
 % 
-% % To split highpass
+% To split highpass
 % [u1, u2] = SplitHaar;
 % u_hi = [u1, u2];
-% % I = sqrt(-1);
-% % u_hi = I.*u_hi;
-% % u_hi = Daubechies8_1d;
+% I = sqrt(-1);
+% u_hi = I.*u_hi;
+% u_hi = Daubechies8_1d;
 
 
 %%
@@ -255,7 +255,6 @@ clear;
 % err = max(max(abs(s-y)))
 
 % DT.plot_DAS_freq(1)
-
 
 
 

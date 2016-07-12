@@ -52,6 +52,14 @@ for iband = 1:nB
         surf(yf); axis tight;colorbar
         view(0, 90);%tightfig;
         hold on; pause(0.5);
+        
+        yt = y2 - I*y1;
+        yf = fftshift(abs(fft2(yt)));
+        
+        surf(yf); axis tight;colorbar
+        view(0, 90);%tightfig;
+        hold on; pause(0.5);
+        
     end
     
 end

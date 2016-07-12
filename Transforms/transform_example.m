@@ -8,26 +8,36 @@ clear;
 %% Eg1. TPCTF2D
 % Test fFrameletTransform2D class
 % clear;
-s = randn(512);
-fb = CTF6_FilterBank_freq(512);
-fb(1) = add(fb(1), fb(2));
-fb(2) = [];
+s = double(imread('Barbara512.png'));
+% s = randn(512);
+% fb = CTF6_FilterBank_freq(512);
+% fb(1) = add(fb(1), fb(2));
+% fb(2) = [];
+
 % fb = Daubechies8_1d;
+fb = SplineLinear1d;
+% fb = SplineCubic1d;
 % fb = fb.convert_ffilter(1024);
 % fb = Tree1Filter1d;
 % fb = fb.convert_ffilter(1024);
 
-WT = fFrameletCrossLv2D(fb);
-WT.nlevel = 1;
+WT = FrameletUndec2D(fb);
+% WT = fFrameletCrossLv2D(fb);
+WT.nlevel = 4;
 WT.coeff = WT.decomposition(s);
 
 y = WT.reconstruction();
 err = max(max(abs(y-s)))
 
-coeff = WT.coeff{1};
-for i = 1:length(coeff);
-    coeff{i} = coeff{i}(:)';
-end
+
+% n = WT.norm(2);
+% ns = norm(s, 'fro');
+% err = abs(n-ns)
+
+% coeff = WT.coeff{1};
+% for i = 1:length(coeff);
+%     coeff{i} = coeff{i}(:)';
+% end
 % WT.level_norm = 5;
 % WT.nor =WT.CalFilterNorm;
 % WT.plotnorm;

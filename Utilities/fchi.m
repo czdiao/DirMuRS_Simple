@@ -33,6 +33,10 @@ if nargin < 8
     choice = 1;
 end
 
+if (epsL<=0) || (epsR<=0)
+    error('Smoothing radius is not positive!');
+end
+
 if cR-cL < epsL+epsR
     error('fchi(x,cL,cR,epsL,epsR,nL,nR,choice) must be with cR-cL>=epsL+epsR!');
 end

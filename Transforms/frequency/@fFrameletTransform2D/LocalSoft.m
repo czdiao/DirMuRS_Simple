@@ -37,6 +37,7 @@ for scale = 1:J
         
         % Threshold value estimation
         T = SigmaN^2./Ssig;
+%         T = SigmaN^2*(1+0.007*SigmaN)./Ssig;    % only for test
         
         % local soft
         Y_coef = soft(Y_coef,T);

@@ -39,7 +39,7 @@ classdef WaveletData2D
         obj2 = times(C, obj1)
         obj_new = minus(obj1, obj2)
         v = convert2array(obj)
-        n = norm(obj, p)
+        n = norm(obj, p)    % lp norm of the wavelet coefficients
     end
     
     methods (Abstract)  % Transforms, filter norm calculation and normalization
@@ -47,18 +47,32 @@ classdef WaveletData2D
         y = reconstruction(obj)
         W = normcoeff(obj)
         W = unnormcoeff(obj)
-        plotnorm(obj)
+        plotnorm(obj, val)      % not only works for plotting norms, 
+                                % any val in the same structure as nor, 
+                                % such as thresholding val of each band
         nor = CalFilterNorm(obj)
         plot_DAS_time(obj, scale)
         plot_DAS_freq(obj, scale)
     end
     
     methods (Abstract)  % denoising tools
-        trueSig = calSigma(obj)
-        Sig_est = latentSigma(obj, sigmaN, opt)
-        W = LocalSoft(obj, Ssig_latent, SigmaN)
-        W = BiShrink(obj, Ssig_latent, SigmaN)
+        trueSig = calSigma(obj)     % calculate coefficients local std
+        Sig_est = latentSigma(obj, sigmaN, opt)     % Estimate the latent original wavelet coeff local std
+        Sig_est = latentSigma_unnormalize(obj, sigmaN, opt) % unnormalized version
+        
+        W = LocalSoft(obj, Ssig_latent, SigmaN)     % Local soft thresholding by Vetterli's paper
+        W = LocalSoft_unnormalize(obj, Ssig_latent, SigmaN) % unnormalized version
+        
+        W = BiShrink(obj, Ssig_latent, SigmaN)      % Bivariate Shrinkage by Selesnick's paper
+        W = SoftThresh(obj, T)              % Bandwise soft thresholding, lambda*T is the thresh value for each band
     end
+    
+    % this is to perform the same operation on each level and band
+    methods (Abstract)  % operation on coefficients of each band, only work on hipass bands
+        w_new = operate_band1(obj, fun_handle, w)
+        w_new = operate_band2(obj, fun_handle, w1, w2)
+    end
+    
     
     
     

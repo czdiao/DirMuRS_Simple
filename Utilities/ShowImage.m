@@ -7,6 +7,7 @@ function [] = ShowImage( x )
 % figure;
 imagesc(x);
 colormap(gray);
+% colormap(jet);
 axis image
 
 colorbar

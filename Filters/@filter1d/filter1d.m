@@ -61,8 +61,8 @@ classdef filter1d
     %       tplot:          Stem plot the filter in time domain.
     %                           1)  tplot(f1d)
     %       upsamplefilter: Upsample the filter sequence.
-    %                           1)  f1d_new = upsamplefilter(f1d, rate)
-    %                           2)  f1d_new = f1d.upsamplefilter(rate)
+    %                           1)  fb1d_new = upsamplefilter(fb1d, rate)
+    %                           2)  fb1d_new = fb1d.upsamplefilter(rate)
     %       plus:           Add up two filter1d objects.
     %                           1)  f1d_new = f1d1 + f1d2
     %       times:          Scalar Multiplication. Must use dot product.
@@ -197,10 +197,13 @@ classdef filter1d
             stem(x, obj.filter);
         end
         
-        function f1d_new = upsamplefilter(f1d, rate)
-            f1d_new = f1d;
-            f1d_new.filter = tupsample(f1d.filter, rate);
-            f1d_new.start_pt = f1d.start_pt*rate;
+        function fb1d_new = upsamplefilter(fb1d, rate)
+            len = length(fb1d);
+            fb1d_new = fb1d;
+            for i = 1:len
+                fb1d_new(i).filter = tupsample(fb1d(i).filter, rate);
+                fb1d_new(i).start_pt = fb1d(i).start_pt*rate;
+            end
         end
         
         function f1d_new = plus(f1d1, f1d2)

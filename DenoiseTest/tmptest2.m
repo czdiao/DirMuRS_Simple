@@ -6,23 +6,23 @@
 % addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
 
 %%
-clear;
-
-% imgName    = '1.1.03.tiff';
-% imgName    = 'Pressed calf leather.tiff';
-% imgName    = 'Mandrill.png';
-imgName = 'Barbara512.png';
-s = double(imread(imgName));
-
-ss = s(321:321+31,471:471+31);
-% s = repmat(ss,16);
-% s = ss;
-
-
-% Nsig = 40;
-% rng(0,'v4');
-% n = Nsig*randn(size(s));
-% x = s + n;
+% clear;
+% 
+% % imgName    = '1.1.03.tiff';
+% % imgName    = 'Pressed calf leather.tiff';
+% % imgName    = 'Mandrill.png';
+% imgName = 'Barbara512.png';
+% s = double(imread(imgName));
+% 
+% ss = s(321:321+31,471:471+31);
+% % s = repmat(ss,16);
+% % s = ss;
+% 
+% 
+% % Nsig = 40;
+% % rng(0,'v4');
+% % n = Nsig*randn(size(s));
+% % x = s + n;
 %% Test for DCT2
 % sdct = dct2(s);
 % 
@@ -111,14 +111,14 @@ ss = s(321:321+31,471:471+31);
 
 
 %%
-% Original
-s = s-128;
-% figure; ShowImage(s);
-fs_orig = fft2(s);
-fs = fftshift(abs(fs_orig));
-fs = log(fs);
-figure; ShowImageColor((fs))
-% figure; ShowImageColor(ifftshift(fs));
+% % Original
+% s = s-128;
+% % figure; ShowImage(s);
+% fs_orig = fft2(s);
+% fs = fftshift(abs(fs_orig));
+% fs = log(fs);
+% figure; ShowImageColor((fs))
+% % figure; ShowImageColor(ifftshift(fs));
 
 %% mask, special area test
 
@@ -169,6 +169,41 @@ figure; ShowImageColor((fs))
 % 
 % mask = GenSmoothMask(x, 32);
 % figure; ShowImage(mask)
+
+%% Test for deblur
+clear;
+
+imgName    = 'goldhill256.png';
+% imgName     ='Barbara512.png';
+
+s = double(imread(imgName));
+
+fb = SplineLinear1d;
+nL = 4;     % decomposition levels
+dtwavelet = FrameletUndec2D(fb);
+dtwavelet.level_norm = nL;
+dtwavelet.nlevel = nL;
+% dtwavelet.nor = dtwavelet.CalFilterNorm;
+
+sigmaN = [5, 10, 25, 40, 50, 80, 100];  % noise level
+len = length(sigmaN);
+
+ker=fspecial('average',9);
+% ker = fspecial('gaussian', 9, 2);
+% ker = 1;   % test for denoising
+tol=1e-3;
+blur=@(f,k)imfilter(f,k,'circular');    % this is the circular convolution of f with k(-x), the zero position of f 
+og=blur(s,ker);     % blurred image
+
+Nsig = 3;
+rng(0,'v4');
+n = Nsig*randn(size(s));
+x = og + n;         % blurred and noisy image
+
+dtwavelet.coeff = dtwavelet.decomposition(x);
+WT = dtwavelet;
+WT.coeff = WT.decomposition(s);
+
 
 
 

@@ -21,7 +21,7 @@ for i = 1:Nfilters
     y = fftshift(abs(obj(i).ffilter));
     %                 figure;
     plot(x, y, varargin{:}); xlim([-pi,pi]); hold on;
-    set(gca,'XTick',linspace(-pi,pi,5)); grid on;
+    set(gca,'XTick',linspace(-pi,pi,9)); grid on;
     pause(0.5);
 end
 

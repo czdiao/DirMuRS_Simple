@@ -22,6 +22,14 @@ function  w  = fdownsample( fdata, rate, dim )
 %   Author: Chenzhe Diao.
 %   Date:   July, 2015
 
+%%
+
+if rate == 1
+    w = fdata;
+    return;
+end
+
+
 %% set dim for vector fdata
 if isrow(fdata)
     dim = 2;

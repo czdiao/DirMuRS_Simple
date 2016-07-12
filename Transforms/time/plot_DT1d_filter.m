@@ -1,10 +1,10 @@
 %% Add Path
 clear;
-HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
-% HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
-OLD_CODE = [HOME_PATH 'old_code'];
-path(pathdef);
-addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
+% HOME_PATH = 'E:/Dropbox/Research/DirMuRS_Simple/';
+% % HOME_PATH = '/Users/chenzhe/Dropbox/Research/DirMuRS_Simple/';
+% OLD_CODE = [HOME_PATH 'old_code'];
+% path(pathdef);
+% addpath(genpath(HOME_PATH)); rmpath(genpath(OLD_CODE));
 
 
 %% Input Filters
@@ -62,11 +62,11 @@ for i = 1:nband
 end
 
 %% Split
-tmp = DAS_Complex;
-DAS_Complex(1) = tmp(1).convfilter(u_low(1).upsamplefilter(2^nLevel));
-DAS_Complex(2) = tmp(1).convfilter(u_low(2).upsamplefilter(2^nLevel));
-DAS_Complex(3) = tmp(2).convfilter(u_hi(1).upsamplefilter(2^nLevel));
-DAS_Complex(4) = tmp(2).convfilter(u_hi(2).upsamplefilter(2^nLevel));
+% tmp = DAS_Complex;
+% DAS_Complex(1) = tmp(1).convfilter(u_low(1).upsamplefilter(2^nLevel));
+% DAS_Complex(2) = tmp(1).convfilter(u_low(2).upsamplefilter(2^nLevel));
+% DAS_Complex(3) = tmp(2).convfilter(u_hi(1).upsamplefilter(2^nLevel));
+% DAS_Complex(4) = tmp(2).convfilter(u_hi(2).upsamplefilter(2^nLevel));
 
 
 
@@ -78,8 +78,8 @@ for i = 1:nband
     DAS_Freq(i) = convert_ffilter(DAS_Complex(i), 1024);
 end
 
-figure
-plot_ffilter(DAS_Freq);
+% figure
+plot_ffilter(DAS_Freq(2));
 
 
 % legend('a_1^p','b_1^p', 'a_2^p', 'b_2^p','a_3^p', 'b_3^p','a_4^p', 'b_4^p');

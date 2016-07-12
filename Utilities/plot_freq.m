@@ -35,7 +35,7 @@ end
 
 % figure;
 [X, Y] = meshgrid(x, y);
-mesh(Y, X, z/10);
+mesh(Y, X, z/1);
 axis image;
 colormap(jet)
 
